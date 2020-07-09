@@ -1,0 +1,47 @@
+---
+machine_level:
+    name: machine_level
+    desc: The machine-level interrupts handle root interrupt sources.
+    url: /riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
+interrupts:
+ - name: msi
+   idx: 3
+   desc: Machine Software Interrupt
+   mode: m
+ - name: mti
+   desc: Machine Timer Interrupt
+   idx: 7
+   mode: m
+ - name: mei
+   desc: Machine External Interrupt
+   idx: 11
+   mode: m
+ - name: ssi
+   idx: 1
+   desc: Supervisor Software Interrupt
+   mode: s
+ - name: sti
+   desc: Supervisor Timer Interrupt
+   idx: 5
+   mode: s
+ - name: sei
+   desc: Supervisor External Interrupt
+   idx: 9
+   mode: s
+ - name: usi
+   idx: 0
+   desc: User Software Interrupt
+   mode: u
+ - name: uti
+   desc: User Timer Interrupt
+   idx: 4
+   mode: u
+ - name: uei
+   desc: User External Interrupt
+   idx: 8
+   mode: u
+ - name: platform defined
+   idx: 16+
+   mode: m
+   desc: Optional platform defined interrupt sources.
+   

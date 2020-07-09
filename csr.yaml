@@ -1,0 +1,922 @@
+---
+addr:
+  rw:
+    mask: 3072
+    lsb: 10
+    values:
+    - values: 0, 1, 2
+      key: RW
+      desc: Read Write
+    - values: 3
+      key: RO
+      desc: Read Only
+  priv:
+    mask: 768
+    lsb: 8
+    values:
+    - values: 0
+      key: U
+      desc: User
+    - values: 1
+      key: S
+      desc: Supervisor
+    - values: 2
+      key: H
+      desc: Hypervisor
+    - values: 3
+      key: M
+      desc: Machine
+  use:
+    mask: 240
+    lsb: 4
+    values:
+    - values: 11XX
+      desc: Custom
+    - values: 1010
+      desc: Debug
+    - values: 1011
+      desc: Debug
+regs:
+  misa:
+    url: "/riscv-isa-manual/latest/machine.html#sec:misa"
+    desc: Machine ISA
+    number: 769
+    priv: MRW
+    sections:
+    - machine
+  mvendorid:
+    url: "/riscv-isa-manual/latest/machine.html#machine-vendor-id-register-mvendorid"
+    desc: Machine Vendor ID
+    number: 3857
+    priv: MRO
+    sections:
+    - machine
+  marchid:
+    url: "/riscv-isa-manual/latest/machine.html#machine-architecture-id-register-marchid"
+    desc: Machine Architecture ID
+    number: 3858
+    priv: MRO
+    sections:
+    - machine
+  mimpid:
+    url: "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
+    desc: Machine Implementation ID
+    number: 3859
+    priv: MRO
+    sections:
+    - machine
+  mhartid:
+    url: "/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"
+    desc: Hardware Thread ID
+    number: 3860
+    priv: MRO
+    sections:
+    - machine
+  mstatus:
+    url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+    desc: Machine Status
+    fields:
+      mie:
+        desc: Machine Interrupt Enable
+        bits:
+        - 3
+      sie:
+        desc: Supervisor Interrupt Enable
+        bits:
+        - 2
+      mpie:
+        desc: Machine Prior Interrupt Enable
+        bits:
+        - 7
+      spie:
+        desc: Supervisor Prior Interrupt Enable
+        bits:
+        - 5
+      mprv:
+        desc: Modify Privilege
+        bits:
+        - 17
+      mpp:
+        desc: Machine Previous Privilege mode
+        bits:
+        - 12
+        - 11
+      spp:
+        desc: Supervisor Previous Privilege mode
+        bits:
+        - 8
+    number: 768
+    priv: MRW
+    sections:
+    - machine
+  mtvec:
+    url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+    desc: Machine Trap Vector Base Address
+    fields:
+      base:
+        desc: Base Address
+        bits:
+        - mxlen-1
+        - 2
+      mode:
+        desc: Address Mode (Direct or Vectored)
+        bits:
+        - 1
+        - 0
+    number: 773
+    priv: MRW
+    sections:
+    - machine
+  medeleg:
+    url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+    desc: Machine Exception Delegation
+    number: 770
+    priv: MRW
+    sections:
+    - machine
+  mideleg:
+    url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+    desc: Machine Interrupt Delegation
+    number: 771
+    priv: MRW
+    sections:
+    - machine
+  mip:
+    url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+    desc: Machine Interrupt Pending
+    number: 836
+    priv: MRW
+    sections:
+    - machine
+  mie:
+    url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+    desc: Machine Interrupt Enable
+    number: 772
+    priv: MRW
+    sections:
+    - machine
+  mtime:
+    url: "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
+    desc: Machine Timer
+    width: 64
+    mmio: true
+    sections:
+    - machine
+  mtimecmp:
+    url: "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
+    desc: Machine Timer Compare
+    width: 64
+    mmio: true
+    sections:
+    - machine
+  mcountinhibit:
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    desc: Machine Counter Inhibit
+    number: 800
+    priv: MRW
+    sections:
+    - machine
+  mcycle:
+    url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+    desc: Clock Cycles Executed Counter
+    per_hart: true
+    number: 2816
+    priv: MRW
+    sections:
+    - machine
+  minstret:
+    url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+    desc: Number of Instructions Retired Counter
+    per_hart: true
+    number: 2818
+    priv: MRW
+    sections:
+    - machine
+  mhpmcounter3:
+    url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+    desc: Event Counters
+    repeat: 3-31
+    number: 2819
+    priv: MRW
+    sections:
+    - machine
+  mhpmevent3:
+    url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+    desc: Event Counter Event Select
+    repeat: 3-31
+    number: 803
+    priv: MRW
+    sections:
+    - machine
+  mcounteren:
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    desc: Counter Enable
+    number: 774
+    priv: MRW
+    sections:
+    - machine
+  scounteren:
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    desc: Counter Enable
+    number: 262
+    priv: SRW
+    sections:
+    - machine
+  mscratch:
+    url: "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+    desc: Machine Mode Scratch Register
+    number: 832
+    priv: MRW
+    sections:
+    - machine
+  mepc:
+    url: "/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc"
+    desc: Machine Exception Program Counter
+    number: 833
+    priv: MRW
+    sections:
+    - machine
+  mcause:
+    url: "/riscv-isa-manual/latest/machine.html#machine-cause-register-mcause"
+    desc: Machine Exception Cause
+    fields:
+      interrupt:
+        desc: Interrupt (1) or Trap (0)
+        bits:
+        - mxlen-1
+      exception_code:
+        desc: Code identifying the last exception.
+        bits:
+        - mxlen-2
+        - 0
+    number: 834
+    priv: MRW
+    sections:
+    - machine
+  mtval:
+    url: "/riscv-isa-manual/latest/machine.html#machine-trap-value-mtval-register"
+    desc: Machine Trap Value
+    number: 835
+    priv: MRW
+    sections:
+    - machine
+  sscratch:
+    url: "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+    desc: Supervisor Mode Scratch Register
+    number: 320
+    priv: SRW
+    sections:
+    - machine
+  sepc:
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-exception-program-counter-sepc"
+    desc: Supervisor Exception Program Counter
+    number: 321
+    priv: SRW
+    sections:
+    - supervisor
+  scause:
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-cause-register-scause"
+    desc: Supervisor Exception Cause
+    fields:
+      interrupt:
+        desc: Interrupt (1) or Trap (0)
+        bits:
+        - sxlen-1
+      exception_code:
+        desc: Code identifying the last exception.
+        bits:
+        - sxlen-2
+        - 0
+    number: 322
+    priv: SRW
+    sections:
+    - supervisor
+  sstatus:
+    url: "/riscv-isa-manual/latest/supervisor.html#sstatus"
+    desc: Supervisor Status
+    fields:
+      sie:
+        desc: Supervisor Interrupt Enable
+        bits:
+        - 2
+      spie:
+        desc: Supervisor Prior Interrupt Enable
+        bits:
+        - 5
+      spp:
+        desc: Supervisor Previous Privilege mode
+        bits:
+        - 8
+    number: 256
+    priv: SRW
+    sections:
+    - supervisor
+  stvec:
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+    desc: Supervisor Trap Vector Base Address
+    fields:
+      base:
+        desc: Base Address
+        bits:
+        - sxlen-1
+        - 2
+      mode:
+        desc: Address Mode (Direct or Vectored)
+        bits:
+        - 1
+        - 0
+    number: 261
+    priv: SRW
+    sections:
+    - supervisor
+  sideleg:
+    url: "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+    desc: Supervisor Interrupt Delegation
+    number: 259
+    priv: SRW
+    sections:
+    - n
+  sedeleg:
+    url: "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+    desc: Supervisor Exception Delegation
+    number: 258
+    priv: SRW
+    sections:
+    - n
+  sip:
+    desc: Supervisor Interrupt Pending
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
+    number: 324
+    priv: SRW
+    sections:
+    - supervisor
+  sie:
+    desc: Supervisor Interrupt Enable
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
+    number: 260
+    priv: SRW
+    sections:
+    - supervisor
+  ustatus:
+    url: "/riscv-isa-manual/latest/n.html#user-status-register-ustatus"
+    desc: User mode restricted view of mstatus
+    fields:
+      uie:
+        desc: User Interrupt Enable
+        bits:
+        - 1
+      upie:
+        desc: User Prior Interrupt Enable
+        bits:
+        - 3
+    number: 0
+    priv: URW
+    sections:
+    - n
+  uip:
+    desc: User Interrupt Pending
+    url: "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+    number: 68
+    priv: URW
+    sections:
+    - n
+  uie:
+    desc: User Interrupt Enable
+    url: "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+    number: 4
+    priv: URW
+    sections:
+    - n
+  uscratch:
+    desc: User Mode Scratch Register
+    url: "/riscv-isa-manual/latest/n.html#other-csrs"
+    number: 64
+    priv: URW
+    sections:
+    - n
+  uepc:
+    url: "/riscv-isa-manual/latest/n.html#other-csrs"
+    desc: User Exception Program Counter
+    number: 65
+    priv: URW
+    sections:
+    - n
+  ucause:
+    url: "/riscv-isa-manual/latest/n.html#other-csrs"
+    desc: User Exception Cause
+    fields:
+      interrupt:
+        desc: Interrupt (1) or Trap (0)
+        bits:
+        - uxlen-1
+      exception_code:
+        desc: Code identifying the last exception.
+        bits:
+        - uxlen-2
+        - 0
+    number: 66
+    priv: URW
+    sections:
+    - n
+  utvec:
+    url: "/riscv-isa-manual/latest/n.html#other-csrs"
+    desc: User Trap Vector Base Address
+    fields:
+      base:
+        desc: Base Address
+        bits:
+        - uxlen-1
+        - 2
+      mode:
+        desc: Address Mode (Direct or Vectored)
+        bits:
+        - 1
+        - 0
+    number: 5
+    priv: URW
+    sections:
+    - n
+  utval:
+    url: "/riscv-isa-manual/latest/n.html#other-csrs"
+    desc: User Trap Value
+    number: 67
+    priv: URW
+    sections:
+    - n
+  fflags:
+    number: 1
+    desc: Floating-Point Accrued Exceptions.
+    priv: URW
+    url: "/riscv-isa-manual/latest/memory.html#sec:memory:ppopipeline"
+    sections:
+    - memory
+  frm:
+    number: 2
+    desc: Floating-Point Dynamic Rounding Mode.
+    priv: URW
+    url: "/riscv-isa-manual/latest/dep-table.html#sec:source-dest-regs"
+    sections:
+    - dep-table
+  fcsr:
+    number: 3
+    desc: Floating-Point Control and Status
+    priv: URW
+    url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+    sections:
+    - machine
+  cycle:
+    number: 3072
+    desc: Cycle counter for RDCYCLE instruction.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  time:
+    number: 3073
+    desc: Timer for RDTIME instruction.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
+    sections:
+    - hypervisor
+  instret:
+    number: 3074
+    desc: Instructions-retired counter for RDINSTRET instruction.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  hpmcounter3:
+    number: 3075
+    desc: Performance-monitoring counter.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  hpmcounter4:
+    number: 3076
+    desc: Performance-monitoring counter.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  hpmcounter31:
+    number: 3103
+    desc: Performance-monitoring counter.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  cycleh:
+    number: 3200
+    desc: Upper 32 bits of  cycle, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    sections:
+    - machine
+  timeh:
+    number: 3201
+    desc: Upper 32 bits of  time, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    sections:
+    - machine
+  instreth:
+    number: 3202
+    desc: Upper 32 bits of  instret, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    sections:
+    - machine
+  hpmcounter3h:
+    number: 3203
+    desc: Upper 32 bits of  hpmcounter3, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  hpmcounter4h:
+    number: 3204
+    desc: Upper 32 bits of  hpmcounter4, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  hpmcounter31h:
+    number: 3231
+    desc: Upper 32 bits of  hpmcounter31, RV32I only.
+    priv: URO
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  stval:
+    number: 323
+    desc: Supervisor bad address or instruction.
+    priv: SRW
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-value-stval-register"
+    sections:
+    - supervisor
+  satp:
+    number: 384
+    desc: Supervisor address translation and protection.
+    priv: SRW
+    url: "/riscv-isa-manual/latest/supervisor.html#sec:satp"
+    sections:
+    - supervisor
+  hstatus:
+    number: 1536
+    desc: Hypervisor status register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+    sections:
+    - hypervisor
+  hedeleg:
+    number: 1538
+    desc: Hypervisor exception delegation register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+    sections:
+    - hypervisor
+  hideleg:
+    number: 1539
+    desc: Hypervisor interrupt delegation register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+    sections:
+    - hypervisor
+  hcounteren:
+    number: 1542
+    desc: Hypervisor counter enable.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+    sections:
+    - hypervisor
+  hgatp:
+    number: 1664
+    desc: Hypervisor guest address translation and protection.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgatp"
+    sections:
+    - hypervisor
+  htimedelta:
+    number: 1541
+    desc: Delta for VS/VU-mode timer.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  htimedeltah:
+    number: 1557
+    desc: Upper 32 bits of  htimedelta, RV32I only.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+    sections:
+    - hypervisor
+  vsstatus:
+    number: 512
+    desc: Virtual supervisor status register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+    sections:
+    - hypervisor
+  vsie:
+    number: 516
+    desc: Virtual supervisor interrupt-enable register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+    sections:
+    - hypervisor
+  vstvec:
+    number: 517
+    desc: Virtual supervisor trap handler base address.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+    sections:
+    - hypervisor
+  vsscratch:
+    number: 576
+    desc: Virtual supervisor scratch register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-scratch-register-vsscratch"
+    sections:
+    - hypervisor
+  vsepc:
+    number: 577
+    desc: Virtual supervisor exception program counter.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-exception-program-counter-vsepc"
+    sections:
+    - hypervisor
+  vscause:
+    number: 578
+    desc: Virtual supervisor trap cause.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-cause-register-vscause"
+    sections:
+    - hypervisor
+  vstval:
+    number: 579
+    desc: Virtual supervisor bad address or instruction.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-value-register-vstval"
+    sections:
+    - hypervisor
+  vsip:
+    number: 580
+    desc: Virtual supervisor interrupt pending.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+    sections:
+    - hypervisor
+  vsatp:
+    number: 640
+    desc: Virtual supervisor address translation and protection.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
+    sections:
+    - hypervisor
+  mstatush:
+    number: 784
+    desc: Additional machine status register, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+    sections:
+    - hypervisor
+  mbase:
+    number: 896
+    desc: Base register.
+    priv: MRW
+  mbound:
+    number: 897
+    desc: Bound register.
+    priv: MRW
+  mibase:
+    number: 898
+    desc: Instruction base register.
+    priv: MRW
+  mibound:
+    number: 899
+    desc: Instruction bound register.
+    priv: MRW
+  mdbase:
+    number: 900
+    desc: Data base register.
+    priv: MRW
+  mdbound:
+    number: 901
+    desc: Data bound register.
+    priv: MRW
+  pmpcfg0:
+    number: 928
+    desc: Physical memory protection configuration.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpcfg1:
+    number: 929
+    desc: Physical memory protection configuration, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpcfg2:
+    number: 930
+    desc: Physical memory protection configuration.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpcfg3:
+    number: 931
+    desc: Physical memory protection configuration, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpaddr0:
+    number: 944
+    desc: Physical memory protection address register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpaddr1:
+    number: 945
+    desc: Physical memory protection address register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  pmpaddr15:
+    number: 959
+    desc: Physical memory protection address register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+    sections:
+    - machine
+  mhpmcounter4:
+    number: 2820
+    desc: Machine performance-monitoring counter.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  mhpmcounter31:
+    number: 2847
+    desc: Machine performance-monitoring counter.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  mcycleh:
+    number: 2944
+    desc: Upper 32 bits of  mcycle, RV32I only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    sections:
+    - machine
+  minstreth:
+    number: 2946
+    desc: Upper 32 bits of  minstret, RV32I only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+    sections:
+    - machine
+  mhpmcounter3h:
+    number: 2947
+    desc: Upper 32 bits of  mhpmcounter3, RV32I only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  mhpmcounter4h:
+    number: 2948
+    desc: Upper 32 bits of  mhpmcounter4, RV32I only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  mhpmcounter31h:
+    number: 2975
+    desc: Upper 32 bits of  mhpmcounter31, RV32I only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  mhpmevent4:
+    number: 804
+    desc: Machine performance-monitoring event selector.
+    priv: MRW
+  mhpmevent31:
+    number: 831
+    desc: Machine performance-monitoring event selector.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+    sections:
+    - machine
+  tselect:
+    number: 1952
+    desc: Debug/Trace trigger register select.
+    priv: MRW
+  tdata1:
+    number: 1953
+    desc: First Debug/Trace trigger data register.
+    priv: MRW
+    url: "/riscv-debug-spec/latest/trigger.html#priority"
+    sections:
+    - debug
+  tdata2:
+    number: 1954
+    desc: Second Debug/Trace trigger data register.
+    priv: MRW
+    url: "/riscv-debug-spec/latest/trigger.html#priority"
+    sections:
+    - debug
+  tdata3:
+    number: 1955
+    desc: Third Debug/Trace trigger data register.
+    priv: MRW
+    url: "/riscv-debug-spec/latest/trigger.html#priority"
+    sections:
+    - debug
+  dcsr:
+    number: 1968
+    desc: Debug control and status register.
+    priv: DRW
+  dpc:
+    number: 1969
+    desc: Debug PC.
+    priv: DRW
+    url: "/riscv-debug-spec/latest/core_debug.html#load-reservedstore-conditional-instructions"
+    sections:
+    - debug
+  dscratch0:
+    number: 1970
+    desc: Debug scratch register 0.
+    priv: DRW
+    url: "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+    sections:
+    - debug
+  dscratch1:
+    number: 1971
+    desc: Debug scratch register 1.
+    priv: DRW
+    url: "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+    sections:
+    - debug
+  hie:
+    number: 1540
+    desc: Hypervisor interrupt-enable register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+    sections:
+    - hypervisor
+  hgeie:
+    number: 1543
+    desc: Hypervisor guest external interrupt-enable register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+    sections:
+    - hypervisor
+  htval:
+    number: 1603
+    desc: Hypervisor bad guest physical address.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
+    sections:
+    - hypervisor
+  hip:
+    number: 1604
+    desc: Hypervisor interrupt pending.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+    sections:
+    - hypervisor
+  htinst:
+    number: 1610
+    desc: Hypervisor trap instruction (transformed).
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+    sections:
+    - hypervisor
+  hgeip:
+    number: 3591
+    desc: Hypervisor guest external interrupt pending.
+    priv: HRO
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+    sections:
+    - hypervisor
+  mtinst:
+    number: 842
+    desc: Machine trap instruction (transformed).
+    priv: MRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+    sections:
+    - hypervisor
+  mtval2:
+    number: 843
+    desc: Machine bad guest physical address.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+    sections:
+    - hypervisor

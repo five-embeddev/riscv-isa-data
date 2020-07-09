@@ -1,0 +1,368 @@
+---
+status:
+  - draft
+  - ratified
+  - frozen
+isa:
+  - name: rv32e
+    url: "/riscv-isa-manual/latest/rv32e.html#rv32e"
+    fullname: RV32E Base Integer Instruction Set
+    desc: Reduced version of the 32 bit integer ISA designed for embedded systems
+    status: draft
+    version: 1.9
+    misa: 4
+    gcc_macro: __riscv __riscv_32e __riscv_xlen=32
+    compiler_support: gcc
+    gcc_version: 8.1.0
+    gcc_dev_branch: 
+  - name: rv32i
+    url: "/riscv-isa-manual/latest/rv32.html#rv32"
+    alias: rv32
+    fullname: RV32I Base Integer Instruction Set
+    desc: A 32 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
+    status: ratified
+    version: 2.1
+    misa: 8
+    gcc_macro: __riscv __riscv_xlen=32
+    compiler_support: gcc
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+  - name: rv64i
+    url: "/riscv-isa-manual/latest/rv64.html#rv64"
+    alias: rv64
+    fullname: RV64I Base Integer Instruction Set
+    desc: A 64 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
+    status: ratified
+    version: 2.1
+    misa: 8
+    gcc_macro: __riscv __riscv_xlen=64
+    compiler_support: gcc
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+  - name: rv128
+    url: "/riscv-isa-manual/latest/rv128.html#rv128"
+    fullname: RV128I Base Integer Instruction Set
+    desc: A variant of the RISC-V ISA supporting a flat 128-bit address space
+    status: draft
+    version: 1.7
+    misa: 8
+abi:
+  eabi:
+    name: eabi
+    spec: https://github.com/riscv/riscv-eabi-spec
+    desc: Embedded ABI
+    child:
+      - ilp32e
+    regs:
+    - reg: x0
+      usage: zero
+      desc: Hard-wired zero value
+      saver: none
+      idx: 0
+    - reg: x1
+      usage: ra
+      desc: Return address
+      saver: Caller
+      idx: 1
+    - reg: x2
+      usage: sp
+      desc: Stack pointer
+      saver: Callee
+      idx: 2
+    - reg: x3
+      usage: gp
+      desc: Global pointer
+      saver: none
+      idx: 3
+    - reg: x4
+      usage: tp
+      desc: Thread pointer
+      saver: none
+      idx: 4
+    - reg: x5
+      usage: t0
+      desc: Temporary/link register
+      saver: Caller
+      idx: 5
+    - reg: x6-x7
+      usage: s3-s4
+      desc: Saved register
+      saver: Coallee
+      idx: 6
+    - reg: x8
+      usage: s0/fp
+      desc: Saved register/frame pointer
+      saver: Callee
+      idx: 8
+    - reg: x9
+      usage: s1
+      desc: Saved register
+      saver: Callee
+      idx: 9
+    - reg: x10-x13
+      usage: a0-a3
+      desc: Argument/return value
+      saver: Caller
+      idx: 10
+    - reg: x14
+      usage: s2
+      desc: Saved register
+      saver: Callee
+      idx: 14
+    - reg: x15
+      usage: t1
+      desc: Temporary
+      saver: Caller
+      idx: 15
+    - reg: x16-x31
+      usage: s5-s20
+      desc: Saved registers
+      saver: Callee    
+      idx: 16
+  uabi:
+    name: uabi
+    spec: https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
+    desc: Unix ABI
+    child:
+      - ilp32
+      - ilp32f
+      - ilp32d
+      - lp64
+      - lp64f
+      - lp64d
+    regs:
+      - reg: x0
+        usage: zero
+        desc: Zero
+        saver: none
+        idx: 0
+      - reg: x1
+        usage: ra
+        desc: Return address
+        saver: none
+        idx: 1
+      - reg: x2
+        usage: sp
+        desc: Stack pointer
+        saver: Callee
+        idx: 2
+      - reg: x3
+        usage: gp
+        desc: Global pointer
+        saver: none
+        idx: 3
+      - reg: x4
+        usage: tp
+        desc: Thread pointer
+        saver: none
+        idx: 4
+      - reg: x5-x7
+        usage: t0-t2
+        desc: Temporary registers
+        saver: none
+        idx: 5
+      - reg: x8-x9
+        usage: s0-s1
+        desc: Saved registers
+        saver: callee
+        idx: 8
+      - reg: x10-x17
+        usage: a0-a7
+        desc: Argument/return value
+        saver: Caller
+        idx: 10
+      - reg: x18-x27
+        usage: s2-s11
+        desc: Saved registers
+        saver: callee
+        idx: 18
+      - reg: x28-x31
+        usage: t3-t6
+        desc: Temporary registers
+        saver: none
+        idx: 28
+extension:
+  - name: A
+    url: "/riscv-isa-manual/latest/a.html"
+    version: 2.0
+    status: frozen
+    misa: 0
+    desc: Atomic extension
+    gcc_macro: __riscv_atomic
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+    order: 2
+    aliased: G
+  - name: B
+    url: "/riscv-bitmanip/draft/bitmanip.html"
+    version: 0.0
+    status: draft
+    misa: 1
+    gcc_macro: 
+    gcc_version: 
+    gcc_dev_branch: riscv-bitmanip
+    compiler_support: gcc
+    desc: Bit-Manipulation extension
+    order: 7
+  - name: C
+    url: "/riscv-isa-manual/latest/c.html"
+    version: 2.0
+    status: ratification
+    misa: 2
+    desc: Compressed extension
+    gcc_macro: __riscv_compressed
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+    order: 6
+  - name: D
+    url: "/riscv-isa-manual/latest/d.html"
+    version: 2.2
+    status: ratification
+    misa: 3
+    desc: Double-precision floating-point extension
+    gcc_macro: __riscv_fdiv __riscv_float_abi_double __riscv_flen=64
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+    order: 4
+    aliased: G
+  - name: F
+    url: "/riscv-isa-manual/latest/f.html"
+    version: 2.2
+    status: ratification
+    misa: 5
+    desc: Single-precision floating-point extension
+    gcc_macro:  __riscv_fdiv __riscv_float_abi_single __riscv_flen=32
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+    order: 3
+    aliased: G
+  - name: G
+    url: "/riscv-isa-manual/latest//machine.html#sec:misa"
+    status: reserved
+    misa: 6
+    desc: Additional standard extensions present
+  - name: H
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor"
+    status: draft
+    misa: 7
+    desc: Hypervisor extension
+  - name: J
+    url: "/riscv-isa-manual/latest/j.html"
+    status: draft
+    misa: 9
+    desc: Dynamically Translated Languages extension
+    order: 8
+  - name: L
+    url: "/riscv-isa-manual/latest/l.html"
+    status: draft
+    misa: 11
+    desc: Decimal Floating-Point extension
+    order: 6
+  - name: M
+    url: "/riscv-isa-manual/latest/m.html"
+    version: 2.0
+    status: ratification
+    misa: 12
+    desc: Integer Multiply/Divide extension
+    gcc_macro: __riscv_mul __riscv_div __riscv_muldiv
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+    order: 1
+    aliased: G
+  - name: N
+    url: "/riscv-isa-manual/latest/n.html"
+    version: 1.1
+    status: draft
+    misa: 13
+    desc: User-level interrupts supported
+    order: 12
+  - name: P
+    url: "/riscv-isa-manual/latest/p.html"
+    version: 0.2
+    status: draft
+    misa: 15
+    desc: Packed-SIMD extension    
+    order: 10
+  - name: Q
+    url: "/riscv-isa-manual/latest/q.html"
+    version: 2.2
+    status: ratification
+    misa: 16
+    desc: Quad-precision floating-point extension
+    order: 5
+  - name: T
+    url: "/riscv-isa-manual/latest/t.html"
+    status: draft
+    misa: 21
+    desc: Transactional Memory extension
+    order: 9
+  - name: V
+    url: "/riscv-v-spec/draft/v-spec.html"
+    version: 0.7
+    status: draft
+    misa: 21
+    desc: Vector extension
+    gcc_macro: __riscv_vector
+    gcc_version: 
+    gcc_dev_branch: 9.2.0-rvv
+    compiler_support: gcc
+    order: 11
+  - name: X
+    url: "/riscv-isa-manual/latest/extensions.html#standard-versus-non-standard-extension"
+    status: reserved
+    misa: 23
+    desc: Non-standard extensions present
+  - name: Counters
+    desc: Performance Counter CSRs
+    url: "/riscv-isa-manual/latest/counters.html"
+    version: 2.0
+    status: draft
+  - name: Zam
+    url: "/riscv-isa-manual/latest/zam.html"
+    version: 0.1
+    status: draft
+    desc: Standard Extension for Misaligned Atomics
+  - name: Zifencei
+    url: "/riscv-isa-manual/latest/Zifencei.html"
+    version: 2.0
+    status: ratification
+    desc: Instruction-Fetch Fence
+    aliased: G
+  - name: Zicsr
+    url: "/riscv-isa-manual/latest/Zicsr.html"
+    version: 2.0
+    status: ratification
+    desc: Control and Status Register (CSR) Instructions
+    aliased: G
+  - name: Ztso
+    url: "/riscv-isa-manual/latest/Ztso.html"
+    version: 0.1
+    status: frozen
+    desc: Standard Extension for Total Store Ordering
+alias:
+  - name: G
+    expansion: IMAFDZicsr_Zifencei
+    desc: Set of extensions required for general purpose OS support.
+    gcc_version: 7.2.0
+    gcc_dev_branch: 
+    compiler_support: gcc
+mode:
+  - fullname: machine
+    name: m
+    url: "/riscv-isa-manual/latest/machine.html#machine" 
+  - fullname: supervisor
+    name: s
+    misa: 18
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor"
+  - fullname: user
+    name: u
+    misa: 20
+  - fullname: debug
+    name: d
+    misa: 
+    url: "/riscv-debug-spec/latest/riscv-debug-spec.html"
