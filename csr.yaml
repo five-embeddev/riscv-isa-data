@@ -158,6 +158,48 @@ regs:
     priv: MRW
     sections:
     - machine
+    fields:
+      msi:
+        desc: 'Interrupt pending: Machine Software Interrupt'
+        bits:
+        - 3
+      mti:
+        desc: 'Interrupt pending: Machine Timer Interrupt'
+        bits:
+        - 7
+      mei:
+        desc: 'Interrupt pending: Machine External Interrupt'
+        bits:
+        - 11
+      ssi:
+        desc: 'Interrupt pending: Supervisor Software Interrupt'
+        bits:
+        - 1
+      sti:
+        desc: 'Interrupt pending: Supervisor Timer Interrupt'
+        bits:
+        - 5
+      sei:
+        desc: 'Interrupt pending: Supervisor External Interrupt'
+        bits:
+        - 9
+      usi:
+        desc: 'Interrupt pending: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt pending: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt pending: User External Interrupt'
+        bits:
+        - 8
+      platform_defined:
+        desc: 'Interrupt pending: Optional platform defined interrupt sources.'
+        bits:
+        - mxlen
+        - 16
   mie:
     url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
     mmio: false
@@ -166,6 +208,48 @@ regs:
     priv: MRW
     sections:
     - machine
+    fields:
+      msi:
+        desc: 'Interrupt enable: Machine Software Interrupt'
+        bits:
+        - 3
+      mti:
+        desc: 'Interrupt enable: Machine Timer Interrupt'
+        bits:
+        - 7
+      mei:
+        desc: 'Interrupt enable: Machine External Interrupt'
+        bits:
+        - 11
+      ssi:
+        desc: 'Interrupt enable: Supervisor Software Interrupt'
+        bits:
+        - 1
+      sti:
+        desc: 'Interrupt enable: Supervisor Timer Interrupt'
+        bits:
+        - 5
+      sei:
+        desc: 'Interrupt enable: Supervisor External Interrupt'
+        bits:
+        - 9
+      usi:
+        desc: 'Interrupt enable: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt enable: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt enable: User External Interrupt'
+        bits:
+        - 8
+      platform_defined:
+        desc: 'Interrupt enable: Optional platform defined interrupt sources.'
+        bits:
+        - mxlen
+        - 16
   mtime:
     url: "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
     desc: Machine Timer
@@ -380,6 +464,31 @@ regs:
     priv: SRW
     sections:
     - supervisor
+    fields:
+      ssi:
+        desc: 'Interrupt pending: Supervisor Software Interrupt'
+        bits:
+        - 1
+      sti:
+        desc: 'Interrupt pending: Supervisor Timer Interrupt'
+        bits:
+        - 5
+      sei:
+        desc: 'Interrupt pending: Supervisor External Interrupt'
+        bits:
+        - 9
+      usi:
+        desc: 'Interrupt pending: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt pending: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt pending: User External Interrupt'
+        bits:
+        - 8
   sie:
     desc: Supervisor Interrupt Enable
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
@@ -388,6 +497,31 @@ regs:
     priv: SRW
     sections:
     - supervisor
+    fields:
+      ssi:
+        desc: 'Interrupt enable: Supervisor Software Interrupt'
+        bits:
+        - 1
+      sti:
+        desc: 'Interrupt enable: Supervisor Timer Interrupt'
+        bits:
+        - 5
+      sei:
+        desc: 'Interrupt enable: Supervisor External Interrupt'
+        bits:
+        - 9
+      usi:
+        desc: 'Interrupt enable: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt enable: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt enable: User External Interrupt'
+        bits:
+        - 8
   ustatus:
     url: "/riscv-isa-manual/latest/n.html#user-status-register-ustatus"
     mmio: false
@@ -413,6 +547,19 @@ regs:
     priv: URW
     sections:
     - n
+    fields:
+      usi:
+        desc: 'Interrupt pending: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt pending: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt pending: User External Interrupt'
+        bits:
+        - 8
   uie:
     desc: User Interrupt Enable
     url: "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
@@ -421,6 +568,19 @@ regs:
     priv: URW
     sections:
     - n
+    fields:
+      usi:
+        desc: 'Interrupt enable: User Software Interrupt'
+        bits:
+        - 0
+      uti:
+        desc: 'Interrupt enable: User Timer Interrupt'
+        bits:
+        - 4
+      uei:
+        desc: 'Interrupt enable: User External Interrupt'
+        bits:
+        - 8
   uscratch:
     desc: User Mode Scratch Register
     url: "/riscv-isa-manual/latest/n.html#other-csrs"

@@ -40,7 +40,7 @@ interrupts:
    desc: User External Interrupt
    idx: 8
    mode: u
- - name: platform defined
+ - name: platform_defined
    idx: 16+
    mode: m
    desc: Optional platform defined interrupt sources.
