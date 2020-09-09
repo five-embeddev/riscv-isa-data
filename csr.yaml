@@ -40,6 +40,7 @@ regs:
   misa:
     url: "/riscv-isa-manual/latest/machine.html#sec:misa"
     mmio: false
+    width: mxlen
     desc: Machine ISA
     number: 769
     priv: MRW
@@ -48,6 +49,7 @@ regs:
   mvendorid:
     url: "/riscv-isa-manual/latest/machine.html#machine-vendor-id-register-mvendorid"
     mmio: false
+    width: 32
     desc: Machine Vendor ID
     number: 3857
     priv: MRO
@@ -55,6 +57,7 @@ regs:
     - machine
   marchid:
     url: "/riscv-isa-manual/latest/machine.html#machine-architecture-id-register-marchid"
+    width: mxlen
     mmio: false
     desc: Machine Architecture ID
     number: 3858
@@ -64,6 +67,7 @@ regs:
   mimpid:
     url: "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
     mmio: false
+    width: mxlen
     desc: Machine Implementation ID
     number: 3859
     priv: MRO
@@ -72,6 +76,7 @@ regs:
   mhartid:
     url: "/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"
     mmio: false
+    width: mxlen
     desc: Hardware Thread ID
     number: 3860
     priv: MRO
@@ -80,6 +85,7 @@ regs:
   mstatus:
     url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
     mmio: false
+    width: mxlen
     desc: Machine Status
     fields:
       mie:
@@ -115,9 +121,16 @@ regs:
     priv: MRW
     sections:
     - machine
+  mstatush:
+    url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+    mmio: false
+    width: 32
+    desc: Machine Status (high)
+    arch: rv32
   mtvec:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
     mmio: false
+    width: mxlen
     desc: Machine Trap Vector Base Address
     fields:
       base:
@@ -137,6 +150,7 @@ regs:
   medeleg:
     url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     mmio: false
+    width: mxlen
     desc: Machine Exception Delegation
     number: 770
     priv: MRW
@@ -145,6 +159,7 @@ regs:
   mideleg:
     url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     mmio: false
+    width: mxlen
     desc: Machine Interrupt Delegation
     number: 771
     priv: MRW
@@ -153,6 +168,7 @@ regs:
   mip:
     url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
     mmio: false
+    width: mxlen
     desc: Machine Interrupt Pending
     number: 836
     priv: MRW
@@ -203,6 +219,7 @@ regs:
   mie:
     url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
     mmio: false
+    width: mxlen
     desc: Machine Interrupt Enable
     number: 772
     priv: MRW
@@ -267,14 +284,30 @@ regs:
   mcountinhibit:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
+    width: 32
     desc: Machine Counter Inhibit
     number: 800
     priv: MRW
     sections:
     - machine
+    fields:
+       cy:
+         desc: Disable incrementing the 'cycle' counter
+         bits:
+           - 0
+       ir:
+         desc: Disable incrementing the 'instret' counter
+         bits:
+           - 2
+       hpm:
+         desc: Disable incrementing the 'hpm3' to 'hpm31' counter.
+         bits:
+           - 31
+           - 3
   mcycle:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
+    width: 64
     desc: Clock Cycles Executed Counter
     per_hart: true
     number: 2816
@@ -284,6 +317,7 @@ regs:
   minstret:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
+    width: 64
     desc: Number of Instructions Retired Counter
     per_hart: true
     number: 2818
@@ -293,6 +327,7 @@ regs:
   mhpmcounter3:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
+    width: 64
     desc: Event Counters
     repeat: 3-31
     number: 2819
@@ -306,16 +341,37 @@ regs:
     repeat: 3-31
     number: 803
     priv: MRW
+    mmio: false
+    width: mxlen
     sections:
     - machine
   mcounteren:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
+    width: 32
     desc: Counter Enable
     number: 774
     priv: MRW
     sections:
     - machine
+    fields:
+       cy:
+         desc: Prevent access to 'cycle' counter from lower priveledge level
+         bits:
+           - 0
+       tm:
+         desc: Prevent access to 'time' counter from lower priveledge level
+         bits:
+           - 1
+       ir:
+         desc: Prevent access to 'instret' counter from lower priveledge level
+         bits:
+           - 2
+       hpm:
+         desc: Prevent access to 'hpm3' to 'hpm31' counter from lower priveledge level
+         bits:
+           - 31
+           - 3
   scounteren:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
@@ -327,6 +383,7 @@ regs:
   mscratch:
     url: "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
     mmio: false
+    width: mxlen
     desc: Machine Mode Scratch Register
     number: 832
     priv: MRW
@@ -335,6 +392,7 @@ regs:
   mepc:
     url: "/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc"
     mmio: false
+    width: mxlen
     desc: Machine Exception Program Counter
     number: 833
     priv: MRW
@@ -343,6 +401,7 @@ regs:
   mcause:
     url: "/riscv-isa-manual/latest/machine.html#machine-cause-register-mcause"
     mmio: false
+    width: mxlen
     desc: Machine Exception Cause
     fields:
       interrupt:
@@ -361,6 +420,7 @@ regs:
   mtval:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-value-mtval-register"
     mmio: false
+    width: mxlen
     desc: Machine Trap Value
     number: 835
     priv: MRW
@@ -1013,6 +1073,8 @@ regs:
   mcycleh:
     number: 2944
     desc: Upper 32 bits of  mcycle, RV32I only.
+    width: 32
+    arch: rv32
     priv: MRW
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
@@ -1024,6 +1086,8 @@ regs:
     priv: MRW
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
+    width: 32
+    arch: rv32
     sections:
     - machine
   mhpmcounter3h:
@@ -1032,6 +1096,8 @@ regs:
     priv: MRW
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
+    width: 32
+    arch: rv32
     sections:
     - machine
   mhpmcounter4h:
@@ -1040,6 +1106,8 @@ regs:
     priv: MRW
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
+    width: 32
+    arch: rv32
     sections:
     - machine
   mhpmcounter31h:
@@ -1048,12 +1116,16 @@ regs:
     priv: MRW
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
+    width: 32
+    arch: rv32
     sections:
     - machine
   mhpmevent4:
     number: 804
     desc: Machine performance-monitoring event selector.
     priv: MRW
+    mmio: false
+    width: mxlen
   mhpmevent31:
     number: 831
     desc: Machine performance-monitoring event selector.
