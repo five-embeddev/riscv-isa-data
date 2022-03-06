@@ -12,6 +12,7 @@ isa:
     version: 1.9
     misa: 4
     gcc_macro: __riscv __riscv_32e __riscv_xlen=32
+    gcc_macro_new: __riscv_e
     compiler_support: gcc
     gcc_version: 8.1.0
     gcc_dev_branch: 
@@ -24,6 +25,7 @@ isa:
     version: 2.1
     misa: 8
     gcc_macro: __riscv __riscv_xlen=32
+    gcc_macro_new: __riscv_i
     compiler_support: gcc
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -189,6 +191,7 @@ extension:
     misa: 0
     desc: Atomic extension
     gcc_macro: __riscv_atomic
+    gcc_macro_new: __riscv_a
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -212,6 +215,7 @@ extension:
     misa: 2
     desc: Compressed extension
     gcc_macro: __riscv_compressed
+    gcc_macro_new: __riscv_c
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -222,7 +226,8 @@ extension:
     status: ratification
     misa: 3
     desc: Double-precision floating-point extension
-    gcc_macro: __riscv_fdiv __riscv_float_abi_double __riscv_flen=64
+    gcc_macro: __riscv_fdiv __riscv_fsqrt __riscv_float_abi_double __riscv_flen=64
+    gcc_macro_new: __riscv_d
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -234,7 +239,8 @@ extension:
     status: ratification
     misa: 5
     desc: Single-precision floating-point extension
-    gcc_macro:  __riscv_fdiv __riscv_float_abi_single __riscv_flen=32
+    gcc_macro:  __riscv_fdiv __riscv_fsqrt __riscv_float_abi_single __riscv_flen=32
+    gcc_macro_new: __riscv_f
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -269,6 +275,7 @@ extension:
     misa: 12
     desc: Integer Multiply/Divide extension
     gcc_macro: __riscv_mul __riscv_div __riscv_muldiv
+    gcc_macro_new: __riscv_m
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -295,6 +302,9 @@ extension:
     misa: 16
     desc: Quad-precision floating-point extension
     order: 5
+
+
+
   - name: T
     url: "/riscv-isa-manual/latest/t.html"
     status: draft
@@ -309,7 +319,7 @@ extension:
     desc: Vector extension
     gcc_macro: __riscv_vector
     gcc_version: 
-    gcc_dev_branch: 9.2.0-rvv
+    gcc_dev_branch: 9.2.0-rvv 10.1.0-rvv
     compiler_support: gcc
     order: 11
   - name: X
@@ -333,12 +343,16 @@ extension:
     status: ratification
     desc: Instruction-Fetch Fence
     aliased: G
+    gcc_macro_new: __riscv_zifencei
+    compiler_support: gcc
   - name: Zicsr
     url: "/riscv-isa-manual/latest/Zicsr.html"
     version: 2.0
     status: ratification
     desc: Control and Status Register (CSR) Instructions
     aliased: G
+    gcc_macro_new: __riscv_zicsr
+    compiler_support: gcc
   - name: Ztso
     url: "/riscv-isa-manual/latest/Ztso.html"
     version: 0.1
