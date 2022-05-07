@@ -122,11 +122,13 @@ regs:
     sections:
     - machine
   mstatush:
-    url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+    number: 784
+    desc: Additional machine status register, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
     mmio: false
-    width: 32
-    desc: Machine Status (high)
-    arch: rv32
+    sections:
+    - hypervisor
   mtvec:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
     mmio: false
@@ -179,43 +181,127 @@ regs:
         desc: 'Interrupt pending: Machine Software Interrupt'
         bits:
         - 3
+        custom: false
       mti:
         desc: 'Interrupt pending: Machine Timer Interrupt'
         bits:
         - 7
+        custom: false
       mei:
         desc: 'Interrupt pending: Machine External Interrupt'
         bits:
         - 11
+        custom: false
       ssi:
         desc: 'Interrupt pending: Supervisor Software Interrupt'
         bits:
         - 1
+        custom: false
       sti:
         desc: 'Interrupt pending: Supervisor Timer Interrupt'
         bits:
         - 5
+        custom: false
       sei:
         desc: 'Interrupt pending: Supervisor External Interrupt'
         bits:
         - 9
+        custom: false
       usi:
         desc: 'Interrupt pending: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt pending: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt pending: User External Interrupt'
         bits:
         - 8
-      platform_defined:
-        desc: 'Interrupt pending: Optional platform defined interrupt sources.'
+        custom: false
+      platform_defined16:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 0.'
         bits:
-        - mxlen
         - 16
+        custom: true
+      platform_defined17:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 1'
+        bits:
+        - 17
+        custom: true
+      platform_defined18:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 2'
+        bits:
+        - 18
+        custom: true
+      platform_defined19:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 3'
+        bits:
+        - 19
+        custom: true
+      platform_defined20:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 4'
+        bits:
+        - 20
+        custom: true
+      platform_defined21:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 5'
+        bits:
+        - 21
+        custom: true
+      platform_defined22:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 6'
+        bits:
+        - 22
+        custom: true
+      platform_defined23:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 7'
+        bits:
+        - 23
+        custom: true
+      platform_defined24:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 8'
+        bits:
+        - 24
+        custom: true
+      platform_defined25:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 9'
+        bits:
+        - 25
+        custom: true
+      platform_defined26:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 10'
+        bits:
+        - 26
+        custom: true
+      platform_defined27:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 11'
+        bits:
+        - 27
+        custom: true
+      platform_defined28:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 12'
+        bits:
+        - 28
+        custom: true
+      platform_defined29:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 13'
+        bits:
+        - 29
+        custom: true
+      platform_defined30:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 14'
+        bits:
+        - 30
+        custom: true
+      platform_defined31:
+        desc: 'Interrupt pending: Optional platform defined interrupt source 15'
+        bits:
+        - 31
+        custom: true
   mie:
     url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
     mmio: false
@@ -230,43 +316,127 @@ regs:
         desc: 'Interrupt enable: Machine Software Interrupt'
         bits:
         - 3
+        custom: false
       mti:
         desc: 'Interrupt enable: Machine Timer Interrupt'
         bits:
         - 7
+        custom: false
       mei:
         desc: 'Interrupt enable: Machine External Interrupt'
         bits:
         - 11
+        custom: false
       ssi:
         desc: 'Interrupt enable: Supervisor Software Interrupt'
         bits:
         - 1
+        custom: false
       sti:
         desc: 'Interrupt enable: Supervisor Timer Interrupt'
         bits:
         - 5
+        custom: false
       sei:
         desc: 'Interrupt enable: Supervisor External Interrupt'
         bits:
         - 9
+        custom: false
       usi:
         desc: 'Interrupt enable: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt enable: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt enable: User External Interrupt'
         bits:
         - 8
-      platform_defined:
-        desc: 'Interrupt enable: Optional platform defined interrupt sources.'
+        custom: false
+      platform_defined16:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 0.'
         bits:
-        - mxlen
         - 16
+        custom: true
+      platform_defined17:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 1'
+        bits:
+        - 17
+        custom: true
+      platform_defined18:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 2'
+        bits:
+        - 18
+        custom: true
+      platform_defined19:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 3'
+        bits:
+        - 19
+        custom: true
+      platform_defined20:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 4'
+        bits:
+        - 20
+        custom: true
+      platform_defined21:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 5'
+        bits:
+        - 21
+        custom: true
+      platform_defined22:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 6'
+        bits:
+        - 22
+        custom: true
+      platform_defined23:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 7'
+        bits:
+        - 23
+        custom: true
+      platform_defined24:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 8'
+        bits:
+        - 24
+        custom: true
+      platform_defined25:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 9'
+        bits:
+        - 25
+        custom: true
+      platform_defined26:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 10'
+        bits:
+        - 26
+        custom: true
+      platform_defined27:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 11'
+        bits:
+        - 27
+        custom: true
+      platform_defined28:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 12'
+        bits:
+        - 28
+        custom: true
+      platform_defined29:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 13'
+        bits:
+        - 29
+        custom: true
+      platform_defined30:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 14'
+        bits:
+        - 30
+        custom: true
+      platform_defined31:
+        desc: 'Interrupt enable: Optional platform defined interrupt source 15'
+        bits:
+        - 31
+        custom: true
   mtime:
     url: "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
     desc: Machine Timer
@@ -291,19 +461,19 @@ regs:
     sections:
     - machine
     fields:
-       cy:
-         desc: Disable incrementing the 'cycle' counter
-         bits:
-           - 0
-       ir:
-         desc: Disable incrementing the 'instret' counter
-         bits:
-           - 2
-       hpm:
-         desc: Disable incrementing the 'hpm3' to 'hpm31' counter.
-         bits:
-           - 31
-           - 3
+      cy:
+        desc: Disable incrementing the 'cycle' counter
+        bits:
+        - 0
+      ir:
+        desc: Disable incrementing the 'instret' counter
+        bits:
+        - 2
+      hpm:
+        desc: Disable incrementing the 'hpm3' to 'hpm31' counter.
+        bits:
+        - 31
+        - 3
   mcycle:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
@@ -341,7 +511,6 @@ regs:
     repeat: 3-31
     number: 803
     priv: MRW
-    mmio: false
     width: mxlen
     sections:
     - machine
@@ -355,23 +524,23 @@ regs:
     sections:
     - machine
     fields:
-       cy:
-         desc: Prevent access to 'cycle' counter from lower priveledge level
-         bits:
-           - 0
-       tm:
-         desc: Prevent access to 'time' counter from lower priveledge level
-         bits:
-           - 1
-       ir:
-         desc: Prevent access to 'instret' counter from lower priveledge level
-         bits:
-           - 2
-       hpm:
-         desc: Prevent access to 'hpm3' to 'hpm31' counter from lower priveledge level
-         bits:
-           - 31
-           - 3
+      cy:
+        desc: Prevent access to 'cycle' counter from lower priveledge level
+        bits:
+        - 0
+      tm:
+        desc: Prevent access to 'time' counter from lower priveledge level
+        bits:
+        - 1
+      ir:
+        desc: Prevent access to 'instret' counter from lower priveledge level
+        bits:
+        - 2
+      hpm:
+        desc: Prevent access to 'hpm3' to 'hpm31' counter from lower priveledge level
+        bits:
+        - 31
+        - 3
   scounteren:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
@@ -408,11 +577,116 @@ regs:
         desc: Interrupt (1) or Trap (0)
         bits:
         - mxlen-1
-      exception_code:
-        desc: Code identifying the last exception.
+        enums:
+          INTERRUPT: 1
+          TRAP: 0
+      interrupt_code:
+        desc: Code identifying the last interrupt
+        condition:
+          mask: 1<<(mxlen-1)
+          value: 1<<(mxlen-1)
         bits:
         - mxlen-2
         - 0
+        enums:
+          msi: 3
+          mti: 7
+          mei: 11
+          ssi: 1
+          sti: 5
+          sei: 9
+          usi: 0
+          uti: 4
+          uei: 8
+          platform_defined16: 16
+          platform_defined17: 17
+          platform_defined18: 18
+          platform_defined19: 19
+          platform_defined20: 20
+          platform_defined21: 21
+          platform_defined22: 22
+          platform_defined23: 23
+          platform_defined24: 24
+          platform_defined25: 25
+          platform_defined26: 26
+          platform_defined27: 27
+          platform_defined28: 28
+          platform_defined29: 29
+          platform_defined30: 30
+          platform_defined31: 31
+      exception_code:
+        desc: Code identifying the last exception.
+        condition:
+          mask: 1<<(mxlen-1)
+          value: 0
+        bits:
+        - mxlen-2
+        - 0
+        enums:
+          INSTRUCTION_ADDRESS_MISALIGNED: 0
+          INSTRUCTION_ACCESS_FAULT: 1
+          ILLEGAL_INSTRUCTION: 2
+          BREAKPOINT: 3
+          LOAD_ADDRESS_MISALIGNED: 4
+          LOAD_ACCESS_FAULT: 5
+          STORE_AMO_ADDRESS_MISALIGNED: 6
+          STORE_AMO_ACCESS_FAULT: 7
+          ENVIRONMENT_CALL_FROM_U_MODE: 8
+          ENVIRONMENT_CALL_FROM_S_MODE: 9
+          RESERVED10: 10
+          ENVIRONMENT_CALL_FROM_M_MODE: 11
+          INSTRUCTION_PAGE_FAULT: 12
+          LOAD_PAGE_FAULT: 13
+          RESERVED14: 14
+          STORE_AMO_PAGE_FAULT: 15
+          RESERVED16: 16
+          RESERVED17: 17
+          RESERVED18: 18
+          RESERVED19: 19
+          RESERVED20: 20
+          RESERVED21: 21
+          RESERVED22: 22
+          RESERVED23: 23
+          CUSTOM24: 24
+          CUSTOM25: 25
+          CUSTOM26: 26
+          CUSTOM27: 27
+          CUSTOM28: 28
+          CUSTOM29: 29
+          CUSTOM30: 30
+          CUSTOM31: 31
+          RESERVED32: 32
+          RESERVED33: 33
+          RESERVED34: 34
+          RESERVED35: 35
+          RESERVED36: 36
+          RESERVED37: 37
+          RESERVED38: 38
+          RESERVED39: 39
+          RESERVED40: 40
+          RESERVED41: 41
+          RESERVED42: 42
+          RESERVED43: 43
+          RESERVED44: 44
+          RESERVED45: 45
+          RESERVED46: 46
+          RESERVED47: 47
+          RESERVED48: 48
+          RESERVED49: 49
+          RESERVED50: 50
+          RESERVED51: 51
+          RESERVED52: 52
+          RESERVED53: 53
+          RESERVED54: 54
+          RESERVED55: 55
+          RESERVED56: 56
+          RESERVED57: 57
+          RESERVED58: 58
+          RESERVED59: 59
+          RESERVED60: 60
+          RESERVED61: 61
+          RESERVED62: 62
+          RESERVED63: 63
     number: 834
     priv: MRW
     sections:
@@ -451,11 +725,93 @@ regs:
         desc: Interrupt (1) or Trap (0)
         bits:
         - sxlen-1
+      interrupt_code:
+        desc: Code identifying the last interrupt
+        condition:
+          mask: 1<<(sxlen-1)
+          value: 1<<(sxlen-1)
+        bits:
+        - mxlen-2
+        - 0
+        enums:
+          ssi: 1
+          sti: 5
+          sei: 9
+          usi: 0
+          uti: 4
+          uei: 8
       exception_code:
         desc: Code identifying the last exception.
+        condition:
+          mask: 1<<(sxlen-1)
+          value: 0
         bits:
         - sxlen-2
         - 0
+        enums:
+          INSTRUCTION_ADDRESS_MISALIGNED: 0
+          INSTRUCTION_ACCESS_FAULT: 1
+          ILLEGAL_INSTRUCTION: 2
+          BREAKPOINT: 3
+          LOAD_ADDRESS_MISALIGNED: 4
+          LOAD_ACCESS_FAULT: 5
+          STORE_AMO_ADDRESS_MISALIGNED: 6
+          STORE_AMO_ACCESS_FAULT: 7
+          ENVIRONMENT_CALL_FROM_U_MODE: 8
+          ENVIRONMENT_CALL_FROM_S_MODE: 9
+          RESERVED10: 10
+          INSTRUCTION_PAGE_FAULT: 12
+          LOAD_PAGE_FAULT: 13
+          RESERVED14: 14
+          STORE_AMO_PAGE_FAULT: 15
+          RESERVED16: 16
+          RESERVED17: 17
+          RESERVED18: 18
+          RESERVED19: 19
+          RESERVED20: 20
+          RESERVED21: 21
+          RESERVED22: 22
+          RESERVED23: 23
+          CUSTOM24: 24
+          CUSTOM25: 25
+          CUSTOM26: 26
+          CUSTOM27: 27
+          CUSTOM28: 28
+          CUSTOM29: 29
+          CUSTOM30: 30
+          CUSTOM31: 31
+          RESERVED32: 32
+          RESERVED33: 33
+          RESERVED34: 34
+          RESERVED35: 35
+          RESERVED36: 36
+          RESERVED37: 37
+          RESERVED38: 38
+          RESERVED39: 39
+          RESERVED40: 40
+          RESERVED41: 41
+          RESERVED42: 42
+          RESERVED43: 43
+          RESERVED44: 44
+          RESERVED45: 45
+          RESERVED46: 46
+          RESERVED47: 47
+          RESERVED48: 48
+          RESERVED49: 49
+          RESERVED50: 50
+          RESERVED51: 51
+          RESERVED52: 52
+          RESERVED53: 53
+          RESERVED54: 54
+          RESERVED55: 55
+          RESERVED56: 56
+          RESERVED57: 57
+          RESERVED58: 58
+          RESERVED59: 59
+          RESERVED60: 60
+          RESERVED61: 61
+          RESERVED62: 62
+          RESERVED63: 63
     number: 322
     priv: SRW
     sections:
@@ -529,26 +885,32 @@ regs:
         desc: 'Interrupt pending: Supervisor Software Interrupt'
         bits:
         - 1
+        custom: false
       sti:
         desc: 'Interrupt pending: Supervisor Timer Interrupt'
         bits:
         - 5
+        custom: false
       sei:
         desc: 'Interrupt pending: Supervisor External Interrupt'
         bits:
         - 9
+        custom: false
       usi:
         desc: 'Interrupt pending: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt pending: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt pending: User External Interrupt'
         bits:
         - 8
+        custom: false
   sie:
     desc: Supervisor Interrupt Enable
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
@@ -562,26 +924,32 @@ regs:
         desc: 'Interrupt enable: Supervisor Software Interrupt'
         bits:
         - 1
+        custom: false
       sti:
         desc: 'Interrupt enable: Supervisor Timer Interrupt'
         bits:
         - 5
+        custom: false
       sei:
         desc: 'Interrupt enable: Supervisor External Interrupt'
         bits:
         - 9
+        custom: false
       usi:
         desc: 'Interrupt enable: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt enable: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt enable: User External Interrupt'
         bits:
         - 8
+        custom: false
   ustatus:
     url: "/riscv-isa-manual/latest/n.html#user-status-register-ustatus"
     mmio: false
@@ -612,14 +980,17 @@ regs:
         desc: 'Interrupt pending: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt pending: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt pending: User External Interrupt'
         bits:
         - 8
+        custom: false
   uie:
     desc: User Interrupt Enable
     url: "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
@@ -633,14 +1004,17 @@ regs:
         desc: 'Interrupt enable: User Software Interrupt'
         bits:
         - 0
+        custom: false
       uti:
         desc: 'Interrupt enable: User Timer Interrupt'
         bits:
         - 4
+        custom: false
       uei:
         desc: 'Interrupt enable: User External Interrupt'
         bits:
         - 8
+        custom: false
   uscratch:
     desc: User Mode Scratch Register
     url: "/riscv-isa-manual/latest/n.html#other-csrs"
@@ -666,11 +1040,90 @@ regs:
         desc: Interrupt (1) or Trap (0)
         bits:
         - uxlen-1
+      interrupt_code:
+        desc: Code identifying the last interrupt
+        condition:
+          mask: 1<<(uxlen-1)
+          value: 1<<(uxlen-1)
+        bits:
+        - mxlen-2
+        - 0
+        enums:
+          usi: 0
+          uti: 4
+          uei: 8
       exception_code:
         desc: Code identifying the last exception.
+        condition:
+          mask: 1<<(uxlen-1)
+          value: 0
         bits:
         - uxlen-2
         - 0
+        enums:
+          INSTRUCTION_ADDRESS_MISALIGNED: 0
+          INSTRUCTION_ACCESS_FAULT: 1
+          ILLEGAL_INSTRUCTION: 2
+          BREAKPOINT: 3
+          LOAD_ADDRESS_MISALIGNED: 4
+          LOAD_ACCESS_FAULT: 5
+          STORE_AMO_ADDRESS_MISALIGNED: 6
+          STORE_AMO_ACCESS_FAULT: 7
+          ENVIRONMENT_CALL_FROM_U_MODE: 8
+          ENVIRONMENT_CALL_FROM_S_MODE: 9
+          RESERVED10: 10
+          INSTRUCTION_PAGE_FAULT: 12
+          LOAD_PAGE_FAULT: 13
+          RESERVED14: 14
+          STORE_AMO_PAGE_FAULT: 15
+          RESERVED16: 16
+          RESERVED17: 17
+          RESERVED18: 18
+          RESERVED19: 19
+          RESERVED20: 20
+          RESERVED21: 21
+          RESERVED22: 22
+          RESERVED23: 23
+          CUSTOM24: 24
+          CUSTOM25: 25
+          CUSTOM26: 26
+          CUSTOM27: 27
+          CUSTOM28: 28
+          CUSTOM29: 29
+          CUSTOM30: 30
+          CUSTOM31: 31
+          RESERVED32: 32
+          RESERVED33: 33
+          RESERVED34: 34
+          RESERVED35: 35
+          RESERVED36: 36
+          RESERVED37: 37
+          RESERVED38: 38
+          RESERVED39: 39
+          RESERVED40: 40
+          RESERVED41: 41
+          RESERVED42: 42
+          RESERVED43: 43
+          RESERVED44: 44
+          RESERVED45: 45
+          RESERVED46: 46
+          RESERVED47: 47
+          RESERVED48: 48
+          RESERVED49: 49
+          RESERVED50: 50
+          RESERVED51: 51
+          RESERVED52: 52
+          RESERVED53: 53
+          RESERVED54: 54
+          RESERVED55: 55
+          RESERVED56: 56
+          RESERVED57: 57
+          RESERVED58: 58
+          RESERVED59: 59
+          RESERVED60: 60
+          RESERVED61: 61
+          RESERVED62: 62
+          RESERVED63: 63
     number: 66
     priv: URW
     sections:
@@ -963,14 +1416,6 @@ regs:
     desc: Virtual supervisor address translation and protection.
     priv: HRW
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
-    mmio: false
-    sections:
-    - hypervisor
-  mstatush:
-    number: 784
-    desc: Additional machine status register, RV32 only.
-    priv: MRW
-    url: "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
     mmio: false
     sections:
     - hypervisor
