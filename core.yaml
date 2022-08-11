@@ -6,6 +6,8 @@ status:
 isa:
   - name: rv32e
     url: "/riscv-isa-manual/latest/rv32e.html#rv32e"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv32e.tex
     fullname: RV32E Base Integer Instruction Set
     desc: Reduced version of the 32 bit integer ISA designed for embedded systems
     status: draft
@@ -16,8 +18,11 @@ isa:
     compiler_support: gcc
     gcc_version: 8.1.0
     gcc_dev_branch: 
+
   - name: rv32i
     url: "/riscv-isa-manual/latest/rv32.html#rv32"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv32.tex
     alias: rv32
     fullname: RV32I Base Integer Instruction Set
     desc: A 32 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
@@ -29,8 +34,11 @@ isa:
     compiler_support: gcc
     gcc_version: 7.2.0
     gcc_dev_branch: 
+
   - name: rv64i
     url: "/riscv-isa-manual/latest/rv64.html#rv64"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv64.tex
     alias: rv64
     fullname: RV64I Base Integer Instruction Set
     desc: A 64 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
@@ -41,8 +49,11 @@ isa:
     compiler_support: gcc
     gcc_version: 7.2.0
     gcc_dev_branch: 
+
   - name: rv128
     url: "/riscv-isa-manual/latest/rv128.html#rv128"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv128.tex
     fullname: RV128I Base Integer Instruction Set
     desc: A variant of the RISC-V ISA supporting a flat 128-bit address space
     status: draft
@@ -186,6 +197,8 @@ abi:
 extension:
   - name: A
     url: "/riscv-isa-manual/latest/a.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/a.tex
     version: 2.0
     status: frozen
     misa: 0
@@ -197,8 +210,13 @@ extension:
     compiler_support: gcc
     order: 2
     aliased: G
+    children: Zam
+
   - name: B
     url: "/riscv-bitmanip/draft/bitmanip.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/b.tex
+    children: [Zbkx, Zbkc, Zbkb]
     version: 0.0
     status: draft
     misa: 1
@@ -208,12 +226,15 @@ extension:
     compiler_support: gcc
     desc: Bit-Manipulation extension
     order: 7
+
   - name: C
     url: "/riscv-isa-manual/latest/c.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/c.tex
     version: 2.0
     status: ratification
     misa: 2
-    desc: Compressed extension
+    desc: Compressed Instructions Extension
     gcc_macro: __riscv_compressed
     gcc_macro_new: __riscv_c
     gcc_version: 7.2.0
@@ -222,6 +243,8 @@ extension:
     order: 6
   - name: D
     url: "/riscv-isa-manual/latest/d.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/d.tex
     version: 2.2
     status: ratification
     misa: 3
@@ -233,8 +256,12 @@ extension:
     compiler_support: gcc
     order: 4
     aliased: G
+    children: Zdinx
+
   - name: F
     url: "/riscv-isa-manual/latest/f.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/f.tex
     version: 2.2
     status: ratification
     misa: 5
@@ -246,30 +273,44 @@ extension:
     compiler_support: gcc
     order: 3
     aliased: G
+    children: Zfinx
+
   - name: G
     url: "/riscv-isa-manual/latest//machine.html#sec:misa"
     status: reserved
     misa: 6
     desc: Additional standard extensions present
+
   - name: H
+    official: https://github.com/riscv/riscv-isa-manual/
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor"
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/hypervisor.tex
     status: draft
     misa: 7
     desc: Hypervisor extension
+
   - name: J
     url: "/riscv-isa-manual/latest/j.html"
+    official: https://github.com/riscv/riscv-j-extension
+    working: https://github.com/riscv/riscv-j-extension/blob/master/README.md
     status: draft
+    children: Zjid
     misa: 9
     desc: Dynamically Translated Languages extension
     order: 8
+
   - name: L
     url: "/riscv-isa-manual/latest/l.html"
     status: draft
     misa: 11
     desc: Decimal Floating-Point extension
     order: 6
+
   - name: M
     url: "/riscv-isa-manual/latest/m.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/m.tex
+    children: Zmmul
     version: 2.0
     status: ratification
     misa: 12
@@ -281,6 +322,7 @@ extension:
     compiler_support: gcc
     order: 1
     aliased: G
+
   - name: N
     url: "/riscv-isa-manual/latest/n.html"
     version: 1.1
@@ -288,22 +330,26 @@ extension:
     misa: 13
     desc: User-level interrupts supported
     order: 12
+
   - name: P
     url: "/riscv-isa-manual/latest/p.html"
+    official: https://github.com/riscv/riscv-p-spec
+    working: https://github.com/riscv/riscv-p-spec/blob/master/P-ext-proposal.adoc
     version: 0.2
     status: draft
     misa: 15
     desc: Packed-SIMD extension    
     order: 10
+
   - name: Q
     url: "/riscv-isa-manual/latest/q.html"
+    official: https://github.com/riscv/riscv-isa-manual/
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/q.tex
     version: 2.2
     status: ratification
     misa: 16
     desc: Quad-precision floating-point extension
     order: 5
-
-
 
   - name: T
     url: "/riscv-isa-manual/latest/t.html"
@@ -311,10 +357,13 @@ extension:
     misa: 21
     desc: Transactional Memory extension
     order: 9
+
   - name: V
     url: "/riscv-v-spec/draft/v-spec.html"
-    version: 0.7
-    status: draft
+    official: https://github.com/riscv/riscv-v-spec
+    working: https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc
+    version: 1.0
+    status: frozen
     misa: 21
     desc: Vector extension
     gcc_macro: __riscv_vector
@@ -322,42 +371,176 @@ extension:
     gcc_dev_branch: 9.2.0-rvv 10.1.0-rvv
     compiler_support: gcc
     order: 11
+
   - name: X
     url: "/riscv-isa-manual/latest/extensions.html#standard-versus-non-standard-extension"
     status: reserved
     misa: 23
     desc: Non-standard extensions present
+
   - name: Counters
     desc: Performance Counter CSRs
     url: "/riscv-isa-manual/latest/counters.html"
     version: 2.0
     status: draft
+
   - name: Zam
     url: "/riscv-isa-manual/latest/zam.html"
     version: 0.1
     status: draft
     desc: Standard Extension for Misaligned Atomics
+    parent: A
+
   - name: Zifencei
     url: "/riscv-isa-manual/latest/Zifencei.html"
+    official: https://github.com/riscv/riscv-isa-manual    
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zifencei.tex
     version: 2.0
     status: ratification
     desc: Instruction-Fetch Fence
     aliased: G
     gcc_macro_new: __riscv_zifencei
     compiler_support: gcc
+
+  - name: Zihintntl
+    desc: Non-Temporal Locality Hints
+    official: https://github.com/riscv/riscv-isa-manual    
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zihintntl.tex
+    version: 0.2
+
+  - name: Zihintpause
+    desc: Pause Hint
+    official: https://github.com/riscv/riscv-isa-manual    
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zihintpause.tex
+    version: 2.0
+
   - name: Zicsr
     url: "/riscv-isa-manual/latest/Zicsr.html"
+    official: https://github.com/riscv/riscv-isa-manual    
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/csr.tex
     version: 2.0
     status: ratification
     desc: Control and Status Register (CSR) Instructions
     aliased: G
     gcc_macro_new: __riscv_zicsr
     compiler_support: gcc
+
   - name: Ztso
     url: "/riscv-isa-manual/latest/Ztso.html"
+    official: https://github.com/riscv/riscv-isa-manual    
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/ztso.tex
     version: 0.1
     status: frozen
     desc: Standard Extension for Total Store Ordering
+
+  - name: Zfh
+    desc: Standard Extension for 16-bit Half-Precision Binary Floating-Point Instructions
+    official: https://github.com/riscv/riscv-isa-manual
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zfh.tex
+    children: Zhinx, Zhinxmin
+
+  - name: Zfinx
+    url: https://github.com/riscv/riscv-zfinx/blob/main/zfinx-1.0.0.pdf
+    official: https://github.com/riscv/riscv-zfinx
+    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zfinx.tex
+    group: [Zfinx, Zdinx, Zhinx, Zhinxmin]
+    parent: F
+    version: 1.0.0
+    desc: Standard Extension for Floating-Point in Integer Registers
+
+  - name: Zdinx
+    parent: D
+    desc: Standard Extension for Double Floating-Point in Integer Registers
+
+  - name: Zhinx
+    desc: Standard Extension for Half Precision Floating-Point in Integer Registers
+    parent: Zfh
+
+  - name: Zhinxmin
+    url: https://github.com/riscv/riscv-zfinx/blob/main/zfinx-1.0.0.pdf
+    parent: Zfh
+
+  - name: Zawrs
+    desc: Wait-on-Reservation-Set extension (low power mode)
+    official: https://github.com/riscv/riscv-zawrs
+    url: https://github.com/riscv/riscv-zawrs/blob/main/Zawrs.pdf
+
+  - name: Zk
+    desc: Scalar Crypto Specification
+    children: [Zkn, Zks, Zkr, Zkne, Zknd, Zknh, Zksed, Zksh, Zkt]
+    url: https://github.com/riscv/riscv-crypto/releases/download/v0.9.0-scalar/riscv-crypto-spec-v0.9.0-scalar.pdf
+
+  - name: Zkn
+    parent: Zk
+  - name: Zks
+    parent: Zk
+  - name: Zkr
+    parent: Zk
+  - name: Zkne
+    parent: Zk
+  - name: Zknd
+    parent: Zk
+  - name: Zknh
+    parent: Zk
+  - name: Zksed
+    parent: Zk
+  - name: Zksh
+    parent: Zk
+  - name: Zkt
+    parent: Zk
+
+  - name: Zmmul
+    desc: Multiply Without Divide
+    parent: M
+    gcc_macro: __riscv_mul 
+
+  - name: Zbkx
+    parent: B
+
+  - name: Zbkc
+    parent: B
+
+  - name: Zbkb    
+    parent: B
+
+  - name: Zce
+    desc: Code Size Reduction
+    url: https://github.com/riscv/riscv-code-size-reduction/tags
+    official: https://github.com/riscv/riscv-code-size-reduction/
+
+  - name: Zjid
+    desc: Temporary Proposal for Instruction/Data synchronization for JIT.
+    parent: J
+    official: https://github.com/riscv/riscv-j-extension/tree/master/zjid
+
+  - name: Zicbo
+    url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
+    desc: Cache Management Operations for RISC-V
+    official: https://github.com/riscv/riscv-CMOs
+    working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/
+    children: [Zicbom, Zicboz, Zicbop]
+
+  - name: Zicbom
+    url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
+    desc: Cache-Block Management Instructions
+    official: https://github.com/riscv/riscv-CMOs
+    working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicbom.adoc
+    parent: Zicbo
+
+  - name: Zicboz
+    url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
+    desc: Cache-Block Zero Instructions
+    official: https://github.com/riscv/riscv-CMOs
+    working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicboz.adoc
+    parent: Zicbo
+
+  - name: Zicbop
+    desc: Cache-Block Prefetch Instructions
+    url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
+    official: https://github.com/riscv/riscv-CMOs
+    working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicbop.adoc
+    parent: Zicbo
+
 alias:
   - name: G
     expansion: IMAFDZicsr_Zifencei
