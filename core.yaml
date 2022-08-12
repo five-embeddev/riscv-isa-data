@@ -214,14 +214,14 @@ extension:
 
   - name: B
     url: "/riscv-bitmanip/draft/bitmanip.html"
-    official: https://github.com/riscv/riscv-isa-manual/
-    working: https://github.com/riscv/riscv-isa-manual/blob/master/src/b.tex
-    children: [Zbkx, Zbkc, Zbkb]
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/overview.adoc
+    children: [Zba,Zbb,Zbc,Zbs, Zbkx, Zbkc, Zbkb]
     version: 0.0
     status: draft
     misa: 1
     gcc_macro: 
-    gcc_version: 
+    gcc_version: 12.1
     gcc_dev_branch: riscv-bitmanip
     compiler_support: gcc
     desc: Bit-Manipulation extension
@@ -494,14 +494,54 @@ extension:
     parent: M
     gcc_macro: __riscv_mul 
 
+  - name: Zba
+    desc: "Bit-manipulation: Address generation instructions"
+    parent: B
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zba
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zba.adoc
+
+  - name: Zbb
+    desc: "Basic bit-manipulation"
+    parent: B
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbb
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbb.adoc
+
+- name: Zbc
+    desc: "Bit-manipulation: Carry-less multiplication"
+    parent: B
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbc
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbc.adoc
+
+  - name: Zbs
+    desc: "Bit-manipulation: Single-bit instructions"
+    parent: B
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbs
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbs.adoc
+
   - name: Zbkx
     parent: B
+    desc: "Bit-manipulation: Crossbar permutations"
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkx
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkz.adoc
 
   - name: Zbkc
+    desc: "Bit-manipulation: Carry-less multiplication for Cryptography"
     parent: B
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkc
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkc.adoc
 
   - name: Zbkb    
     parent: B
+    desc: "Bit-manipulation for Cryptography"
+    url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkb
+    official: https://github.com/riscv/riscv-bitmanip
+    working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkb.adoc
 
   - name: Zce
     desc: Code Size Reduction
