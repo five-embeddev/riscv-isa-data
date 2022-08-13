@@ -13,8 +13,9 @@ isa:
     status: draft
     version: 1.9
     misa: 4
-    gcc_macro: __riscv __riscv_32e __riscv_xlen=32
-    gcc_macro_new: __riscv_e
+    gcc_macro: __riscv __riscv_32e __riscv_xlen=32 
+    gcc_macro_obsolete:  
+    gcc_macro_new:  __riscv_e
     compiler_support: gcc
     gcc_version: 8.1.0
     gcc_dev_branch: 
@@ -46,6 +47,7 @@ isa:
     version: 2.1
     misa: 8
     gcc_macro: __riscv __riscv_xlen=64
+    gcc_macro_new: __riscv_i
     compiler_support: gcc
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -59,6 +61,9 @@ isa:
     status: draft
     version: 1.7
     misa: 8
+    gcc_macro: __riscv __riscv_xlen=128
+    gcc_macro_new: __riscv_i
+
 abi:
   eabi:
     name: eabi
@@ -203,7 +208,8 @@ extension:
     status: frozen
     misa: 0
     desc: Atomic extension
-    gcc_macro: __riscv_atomic
+    gcc_macro: 
+    gcc_macro_obsolete: __riscv_atomic
     gcc_macro_new: __riscv_a
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -221,7 +227,7 @@ extension:
     status: draft
     misa: 1
     gcc_macro: 
-    gcc_version: 12.1
+    gcc_version: 12.0
     gcc_dev_branch: riscv-bitmanip
     compiler_support: gcc
     desc: Bit-Manipulation extension
@@ -235,7 +241,8 @@ extension:
     status: ratification
     misa: 2
     desc: Compressed Instructions Extension
-    gcc_macro: __riscv_compressed
+    gcc_macro: 
+    gcc_macro_obsolete: __riscv_compressed
     gcc_macro_new: __riscv_c
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -249,8 +256,9 @@ extension:
     status: ratification
     misa: 3
     desc: Double-precision floating-point extension
-    gcc_macro: __riscv_fdiv __riscv_fsqrt __riscv_float_abi_double __riscv_flen=64
-    gcc_macro_new: __riscv_d
+    gcc_macro: __riscv_float_abi_double __riscv_flen=64
+    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt 
+    gcc_macro_new: __riscv_d 
     gcc_version: 7.2.0
     gcc_dev_branch: 
     compiler_support: gcc
@@ -266,7 +274,8 @@ extension:
     status: ratification
     misa: 5
     desc: Single-precision floating-point extension
-    gcc_macro:  __riscv_fdiv __riscv_fsqrt __riscv_float_abi_single __riscv_flen=32
+    gcc_macro: __riscv_float_abi_single __riscv_flen=32
+    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt 
     gcc_macro_new: __riscv_f
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -315,7 +324,8 @@ extension:
     status: ratification
     misa: 12
     desc: Integer Multiply/Divide extension
-    gcc_macro: __riscv_mul __riscv_div __riscv_muldiv
+    gcc_macro: 
+    gcc_macro_obsolete: __riscv_mul __riscv_muldiv __riscv_div
     gcc_macro_new: __riscv_m
     gcc_version: 7.2.0
     gcc_dev_branch: 
@@ -340,6 +350,7 @@ extension:
     misa: 15
     desc: Packed-SIMD extension    
     order: 10
+    gcc_macro_new: __riscv_p
 
   - name: Q
     url: "/riscv-isa-manual/latest/q.html"
@@ -350,6 +361,7 @@ extension:
     misa: 16
     desc: Quad-precision floating-point extension
     order: 5
+    gcc_macro: __riscv_flen=128
 
   - name: T
     url: "/riscv-isa-manual/latest/t.html"
@@ -366,11 +378,13 @@ extension:
     status: frozen
     misa: 21
     desc: Vector extension
-    gcc_macro: __riscv_vector
+    gcc_macro: __riscv_vector __riscv_v_min_vlen __riscv_v_elen __riscv_v_elen_fp
+    gcc_macro_new: __riscv_v 
     gcc_version: 
     gcc_dev_branch: 9.2.0-rvv 10.1.0-rvv
     compiler_support: gcc
     order: 11
+    params: [ELEN, VLEN]
 
   - name: X
     url: "/riscv-isa-manual/latest/extensions.html#standard-versus-non-standard-extension"
@@ -438,6 +452,7 @@ extension:
     official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zfh.tex
     children: Zhinx, Zhinxmin
+    gcc_macro_new: __riscv_zfh
 
   - name: Zfinx
     url: https://github.com/riscv/riscv-zfinx/blob/main/zfinx-1.0.0.pdf
@@ -492,7 +507,7 @@ extension:
   - name: Zmmul
     desc: Multiply Without Divide
     parent: M
-    gcc_macro: __riscv_mul 
+    gcc_macro_obsolete: __riscv_mul 
 
   - name: Zba
     desc: "Bit-manipulation: Address generation instructions"
@@ -500,6 +515,8 @@ extension:
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zba
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zba.adoc
+    gcc_version: 12.0
+    gcc_macro_new: __riscv_zba
 
   - name: Zbb
     desc: "Basic bit-manipulation"
@@ -507,13 +524,17 @@ extension:
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbb
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbb.adoc
+    gcc_version: 12.0
+    gcc_macro_new: __riscv_zbb
 
-- name: Zbc
+  - name: Zbc
     desc: "Bit-manipulation: Carry-less multiplication"
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbc
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbc.adoc
+    gcc_version: 12.0
+    gcc_macro_new: __riscv_zbc
 
   - name: Zbs
     desc: "Bit-manipulation: Single-bit instructions"
@@ -521,6 +542,8 @@ extension:
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbs
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbs.adoc
+    gcc_version: 12.0
+    gcc_macro_new: __riscv_zbs
 
   - name: Zbkx
     parent: B
@@ -580,6 +603,78 @@ extension:
     official: https://github.com/riscv/riscv-CMOs
     working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicbop.adoc
     parent: Zicbo
+
+  - name: Zve
+    desc: Vector Extensions for Embedded Processors
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    children: [Zve32x, Zve32f, Zve64x, Zve64f, Zve64d]
+
+  - name: Zve32x
+    parent: Zve
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    desc: "VLEN>=32 bits, Integer Only Vector"
+    gcc_new_macro: __riscv_vector __riscv_v_min_vlen=32 __riscv_v_elen=32 __riscv_v_elen_fp=0
+
+  - name: Zve32f
+    parent: Zve
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    desc: "VLEN>=32 bits, 32 Bit Float Vector"
+    gcc_new_macro: __riscv_vector __riscv_v_min_vlen=32 __riscv_v_elen=32 __riscv_v_elen_fp=32
+
+  - name: Zve64x
+    parent: Zve
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    desc: "VLEN>=64 bits, Integer Only Vector"
+    gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64 __riscv_v_elen=64 __riscv_v_elen_fp=0
+
+  - name: Zve64f
+    parent: Zve
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    desc: "VLEN>=64 bits, 32 Bit Float Support Vector"
+    gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64  __riscv_v_elen=64 __riscv_v_elen_fp=32
+
+  - name: Zve64d
+    parent: Zve
+    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    desc: "VLEN>=64 bits, 64 Bit Float Support Vector"
+    gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64 __riscv_v_elen=64 __riscv_v_elen_fp=64
+
+  - name: Zvl
+    parent: V
+    children: [Zvl32b, Zvl64b, Zvl128b, Zvl256b, Zvl512b, Zvl1024b]
+    url: "/riscv-v-spec/draft/v-spec.html#_zvl_minimum_vector_length_standard_extensions"
+    desc: Minimum Vector Length Standard Extensions
+    gcc_new_macro: __riscv_v_min_vlen=X
+
+  - name: Zvl32b
+    parent: Zvl
+    desc: "VLEN>=32 bits (default)"
+    gcc_new_macro: __riscv_v_min_vlen=32
+
+  - name: Zvl64b
+    parent: Zvl
+    desc: "VLEN>=64 bits"
+    gcc_new_macro: __riscv_v_min_vlen=64
+
+  - name: Zvl128b
+    parent: Zvl
+    desc: "VLEN>=128 bits"
+    gcc_new_macro: __riscv_v_min_vlen=128	
+
+  - name: Zvl256b
+    parent: Zvl
+    desc: "VLEN>=256 bits"
+    gcc_new_macro: __riscv_v_min_vlen=256
+
+  - name: Zvl512b
+    parent: Zvl
+    desc: "VLEN>=512 bits"
+    gcc_new_macro: __riscv_v_min_vlen=512
+
+  - name: Zvl1024b
+    parent: Zvl
+    desc: "VLEN>=1024 bits"
+    gcc_new_macro: __riscv_v_min_vlen=1024
 
 alias:
   - name: G
