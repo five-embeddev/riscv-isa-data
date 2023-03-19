@@ -176,7 +176,7 @@ opcodes:
     - rd
     - jimm20
     main_desc: rv32
-    main_id: "#programmers-model-for-base-integer-isa"
+    main_id: "#unconditional-jumps"
     desc:
       rv32:
         "#programmers-model-for-base-integer-isa":
@@ -2550,8 +2550,8 @@ opcodes:
     - 1..0=3
     opcode_group: opcodes
     opcode_args: *7
-    main_desc: hypervisor
-    main_id: "#hypervisor-status-register-hstatus"
+    main_desc: machine
+    main_id: "#otherpriv"
     desc:
       hypervisor:
         "#hypervisor-status-register-hstatus":

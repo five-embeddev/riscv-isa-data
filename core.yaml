@@ -75,68 +75,81 @@ abi:
     - reg: x0
       usage: zero
       desc: Hard-wired zero value
-      saver: none
+      saver: immutable
       idx: 0
+      group: 0
     - reg: x1
       usage: ra
       desc: Return address
-      saver: Caller
+      saver: not_applicable
       idx: 1
+      group: 0
     - reg: x2
       usage: sp
       desc: Stack pointer
-      saver: Callee
+      saver: callee
       idx: 2
+      group: 0
     - reg: x3
       usage: gp
       desc: Global pointer
-      saver: none
+      saver: global
       idx: 3
+      group: 0
     - reg: x4
       usage: tp
       desc: Thread pointer
-      saver: none
+      saver: global
       idx: 4
+      group: 0
     - reg: x5
       usage: t0
       desc: Temporary/link register
-      saver: Caller
+      saver: caller
       idx: 5
+      group: 1
     - reg: x6-x7
       usage: s3-s4
       desc: Saved register
-      saver: Coallee
+      saver: callee
       idx: 6
+      group: 1
     - reg: x8
       usage: s0/fp
       desc: Saved register/frame pointer
-      saver: Callee
+      saver: callee
       idx: 8
+      group: 1
     - reg: x9
       usage: s1
       desc: Saved register
-      saver: Callee
+      saver: callee
       idx: 9
+      group: 1
     - reg: x10-x13
       usage: a0-a3
       desc: Argument/return value
-      saver: Caller
+      saver: caller
       idx: 10
+      group: 2
     - reg: x14
       usage: s2
       desc: Saved register
-      saver: Callee
+      saver: callee
       idx: 14
+      group: 3
     - reg: x15
       usage: t1
       desc: Temporary
-      saver: Caller
+      saver: caller
       idx: 15
+      group: 3
     - reg: x16-x31
       usage: s5-s20
       desc: Saved registers
-      saver: Callee    
+      saver: callee    
       idx: 16
+      group: 4
   uabi:
     name: uabi
     spec: https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
@@ -152,53 +165,63 @@ abi:
       - reg: x0
         usage: zero
         desc: Zero
-        saver: none
+        saver: immutable
         idx: 0
+        group: 0
       - reg: x1
         usage: ra
         desc: Return address
-        saver: none
+        saver: not_applicable
         idx: 1
+        group: 0
       - reg: x2
         usage: sp
         desc: Stack pointer
-        saver: Callee
+        saver: callee
         idx: 2
+        group: 0
       - reg: x3
         usage: gp
         desc: Global pointer
-        saver: none
+        saver: global
         idx: 3
+        group: 0
       - reg: x4
         usage: tp
         desc: Thread pointer
-        saver: none
+        saver: global
         idx: 4
+        group: 0
       - reg: x5-x7
         usage: t0-t2
         desc: Temporary registers
         saver: none
         idx: 5
+        group: 1
       - reg: x8-x9
         usage: s0-s1
         desc: Saved registers
         saver: callee
         idx: 8
+        group: 1
       - reg: x10-x17
         usage: a0-a7
         desc: Argument/return value
-        saver: Caller
+        saver: caller
         idx: 10
+        group: 2
       - reg: x18-x27
         usage: s2-s11
         desc: Saved registers
         saver: callee
         idx: 18
+        group: 3
       - reg: x28-x31
         usage: t3-t6
         desc: Temporary registers
         saver: none
         idx: 28
+        group: 4
 extension:
   - name: A
     url: "/riscv-isa-manual/latest/a.html"
