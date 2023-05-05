@@ -45,7 +45,49 @@ regs:
     number: 769
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:misa"
+      - "/riscv-isa-manual/latest/machine.html#machine-vendor-id-register-mvendorid"
+      - "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcause"
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:scause"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#privilege-modes"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      intro:
+      - "/riscv-isa-manual/latest/intro.html#memory"
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_instruction_listing"
+      debug:
+      - "/riscv-debug-spec/latest/introduction.html#context"
+      - "/riscv-debug-spec/latest/Sdext.html#debreg"
+      - "/riscv-debug-spec/latest/core_debug.html#debreg"
+    fields:
+      mxl:
+        desc: Encodes the native base integer ISA width.
+        bits:
+        - mxlen-1
+        - mxlen-2
+        width: 2
+        values: 
+        1: xlen=32
+        2: xlen=64
+        3: xlen=128
+      extensions:
+        desc: Encodes the presence of the standard extensions, with a single bit per
+          letter of the alphabet (bit 0 encodes presence of extension “A” , bit 1
+          encodes presence of extension “B”, through to bit 25 which encodes “Z”).
+          The “I” bit will be set for RV32I, RV64I, RV128I base ISAs, and the “E”
+          bit will be set for RV32E.
+        bits:
+        - 25
+        - 0
   mvendorid:
     url: "/riscv-isa-manual/latest/machine.html#machine-vendor-id-register-mvendorid"
     mmio: false
@@ -54,7 +96,10 @@ regs:
     number: 3857
     priv: MRO
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-vendor-id-register-mvendorid"
+      - "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
+      - "/riscv-isa-manual/latest/machine.html#machine-architecture-id-register-marchid"
   marchid:
     url: "/riscv-isa-manual/latest/machine.html#machine-architecture-id-register-marchid"
     width: mxlen
@@ -63,7 +108,9 @@ regs:
     number: 3858
     priv: MRO
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-architecture-id-register-marchid"
+      - "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
   mimpid:
     url: "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
     mmio: false
@@ -72,7 +119,9 @@ regs:
     number: 3859
     priv: MRO
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-implementation-id-register-mimpid"
+      - "/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"
   mhartid:
     url: "/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"
     mmio: false
@@ -81,54 +130,237 @@ regs:
     number: 3860
     priv: MRO
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"
+      - "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+      debug:
+      - "/riscv-debug-spec/latest/debug_module.html#selecting-a-single-hart"
+      - "/riscv-debug-spec/latest/implementations.html#dmi_signals"
   mstatus:
     url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
     mmio: false
     width: mxlen
     desc: Machine Status
     fields:
+      sxl:
+        desc: Control the value of SXLEN for S-mode.
+        category: Base ISA Control
+        bits:
+        - 35
+        - 34
+      uxl: &2
+        desc: Control the value of UXLEN for U-mode.
+        category: Base ISA Control
+        bits:
+        - 33
+        - 32
+      mbe:
+        desc: Control the endianness of memory accesses made from M-mode other than
+          instruction fetches. (Instruction fetches are always little-endian).
+        category: Endianness Control
+        bits:
+        - 37
+        values: &1
+          0: Little endian
+          1: Big endian
+      sbe:
+        desc: Control the endianness of memory accesses made from S-mode other than
+          instruction fetches. (Instruction fetches are always little-endian).
+        category: Endianness Control
+        bits:
+        - 36
+        values: *1
+      ube:
+        desc: Control the endianness of memory accesses made from S-mode other than
+          instruction fetches. (Instruction fetches are always little-endian).
+        category: Endianness Control
+        bits:
+        - 6
+        values: *1
+      fs:
+        desc: The FS field encodes the status of the floating-point unit state, including
+          the floating-point registers f0–f31 and the CSRs fcsr, frm, and fflags.
+        category: Extension Context
+        bits:
+        - 14
+        - 13
+      vs:
+        desc: The VS field encodes the status of the vector extension state, including
+          the vector registers v0–v31 and the CSRs vcsr, vxrm, vxsat, vstart, vl,
+          vtype, and vlenb.
+        category: Extension Context
+        bits:
+        - 10
+        - 9
+      xs:
+        desc: The XS field encodes the status of additional user-mode extensions and
+          associated state.
+        category: Extension Context
+        bits:
+        - 16
+        - 15
+      sd:
+        desc: Read-only bit that summarizes whether either the FS, VS, or XS fields
+          signal the presence of some dirty state that will require saving extended
+          user context to memory.
+        category: Extension Context
+        bits:
+        - mxlen-1
+      sum:
+        desc: The SUM (permit Supervisor User Memory access) bit modifies the privilege
+          with which S-mode loads and stores access virtual memory.
+        category: Memory Privilege
+        bits:
+        - 18
+        values:
+          0: S-mode memory accesses to pages that are accessible by U-mode will fault.
+          1: S-mode memory accesses to pages that are accessible by U-mode are permitted.
+      mxr:
+        desc: The MXR (Make eXecutable Readable) bit modifies the privilege with which
+          loads access virtual memory.
+        category: Memory Privilege
+        bits:
+        - 19
+        values:
+          0: Only loads from pages marked readable will succeed.
+          1: Loads from pages marked either readable or executable will succeed.
+      tvm:
+        desc: The TVM (Trap Virtual Memory) bit is a WARL field that supports intercepting
+          supervisor virtual-memory management operations.
+        priv: WARL
+        bits:
+        - 20
+        category: Virtualization Support
+      tw:
+        desc: The TW (Timeout Wait) bit is a WARL field that supports intercepting
+          the WFI instruction.
+        priv: WARL
+        bits:
+        - 21
+        category: Virtualization Support
+      tsr:
+        desc: The TSR (Trap SRET) bit is a WARL field that supports intercepting the
+          supervisor exception return instruction, SRET.
+        priv: WARL
+        bits:
+        - 22
+        category: Virtualization Support
       mie:
         desc: Machine Interrupt Enable
+        category: Interrupt-Enable Stack
         bits:
         - 3
+        values: 
+        0: Interrupts are disabled.
+        1: Interrupts are enabled.
       sie:
         desc: Supervisor Interrupt Enable
+        category: Interrupt-Enable Stack
         bits:
         - 2
+        values: 
       mpie:
         desc: Machine Prior Interrupt Enable
+        category: Interrupt-Enable Stack
         bits:
         - 7
       spie:
         desc: Supervisor Prior Interrupt Enable
+        category: Interrupt-Enable Stack
         bits:
         - 5
       mprv:
         desc: Modify Privilege
+        category: Memory Privilege
         bits:
         - 17
+        values: 
+        0: Loads and stores behave as normal, using the translation and protection
+          mechanisms of the current privilege mode.
+        1: Load and store memory addresses are translated and protected, and endianness
+          is applied, as though the current privilege mode were set to MPP.
       mpp:
-        desc: Machine Previous Privilege mode
+        desc: Machine Previous Privilege mode. Two-level stack
+        category: Interrupt-Enable Stack
+        priv: WARL
         bits:
         - 12
         - 11
       spp:
         desc: Supervisor Previous Privilege mode
+        category: Interrupt-Enable Stack
         bits:
         - 8
     number: 768
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#wfi"
+      - "/riscv-isa-manual/latest/machine.html#sec:customsys"
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      - "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-instructions"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:sv39"
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_context_status_in_mstatus"
+      n:
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+      debug:
+      - "/riscv-debug-spec/latest/Sdext.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/Sdext.html#reset"
+      - "/riscv-debug-spec/latest/Sdext.html#xlen"
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
+      - "/riscv-debug-spec/latest/debugger_implementation.html#reading-memory"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
+      - "/riscv-debug-spec/latest/abstract_commands.html#quick-access"
+      - "/riscv-debug-spec/latest/core_debug.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/trigger.html#trigger-registers"
+      - "/riscv-debug-spec/latest/debugger_implementation.html#deb:regprogbuf"
   mstatush:
     number: 784
     desc: Additional machine status register, RV32 only.
     priv: MRW
-    url: "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
     mmio: false
+    fields:
+      mbe:
+        desc: Control the endianness of memory accesses made from M-mode other than
+          instruction fetches. (Instruction fetches are always little-endian).
+        category: Endianness Control
+        bits:
+        - 5
+        values: *1
+      sbe:
+        desc: Control the endianness of memory accesses made from S-mode other than
+          instruction fetches. (Instruction fetches are always little-endian).
+        category: Endianness Control
+        bits:
+        - 4
+        values: *1
+    url: "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
     sections:
-    - hypervisor
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
   mtvec:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
     mmio: false
@@ -148,7 +380,11 @@ regs:
     number: 773
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   medeleg:
     url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     mmio: false
@@ -157,7 +393,19 @@ regs:
     number: 770
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      - "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+      - "/riscv-isa-manual/latest/n.html#other-csrs"
+      debug:
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
   mideleg:
     url: "/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     mmio: false
@@ -166,7 +414,23 @@ regs:
     number: 771
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#sec:customsys"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#global-interrupt-sources"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      - "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+      - "/riscv-isa-manual/latest/n.html#other-csrs"
   mip:
     url: "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
     mmio: false
@@ -175,7 +439,21 @@ regs:
     number: 836
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#sec:customsys"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#interrupt-gateways"
+      - "/riscv-isa-manual/latest/plic.html#global-interrupt-sources"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     fields:
       msi:
         desc: 'Interrupt pending: Machine Software Interrupt'
@@ -310,7 +588,22 @@ regs:
     number: 772
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#machine-mode-privileged-instructions"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#global-interrupt-sources"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#exception-trigger-etrigger-at-0x7a1"
     fields:
       msi:
         desc: 'Interrupt enable: Machine Software Interrupt'
@@ -327,32 +620,32 @@ regs:
         bits:
         - 11
         custom: false
-      ssi:
+      ssi: &3
         desc: 'Interrupt enable: Supervisor Software Interrupt'
         bits:
         - 1
         custom: false
-      sti:
+      sti: &4
         desc: 'Interrupt enable: Supervisor Timer Interrupt'
         bits:
         - 5
         custom: false
-      sei:
+      sei: &5
         desc: 'Interrupt enable: Supervisor External Interrupt'
         bits:
         - 9
         custom: false
-      usi:
+      usi: &6
         desc: 'Interrupt enable: User Software Interrupt'
         bits:
         - 0
         custom: false
-      uti:
+      uti: &7
         desc: 'Interrupt enable: User Timer Interrupt'
         bits:
         - 4
         custom: false
-      uei:
+      uei: &8
         desc: 'Interrupt enable: User External Interrupt'
         bits:
         - 8
@@ -443,14 +736,22 @@ regs:
     width: 64
     mmio: true
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
+      - "/riscv-isa-manual/latest/machine.html#machine-mode-privileged-instructions"
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      debug:
+      - "/riscv-debug-spec/latest/Sdext.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
   mtimecmp:
     url: "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
     desc: Machine Timer Compare
     width: 64
     mmio: true
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-timer-registers-mtime-and-mtimecmp"
+      - "/riscv-isa-manual/latest/machine.html#machine-mode-privileged-instructions"
   mcountinhibit:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
@@ -459,7 +760,9 @@ regs:
     number: 800
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
     fields:
       cy:
         desc: Disable incrementing the 'cycle' counter
@@ -483,7 +786,10 @@ regs:
     number: 2816
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
   minstret:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
@@ -493,7 +799,10 @@ regs:
     number: 2818
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#otherpriv"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
   mhpmcounter3:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
@@ -503,7 +812,8 @@ regs:
     number: 2819
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmevent3:
     url: "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
     mmio: false
@@ -513,7 +823,8 @@ regs:
     priv: MRW
     width: mxlen
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mcounteren:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
@@ -522,7 +833,14 @@ regs:
     number: 774
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     fields:
       cy:
         desc: Prevent access to 'cycle' counter from lower priveledge level
@@ -548,7 +866,13 @@ regs:
     number: 262
     priv: SRW
     sections:
-    - machine
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#counter-enable-register-scounteren"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   mscratch:
     url: "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
     mmio: false
@@ -557,7 +881,11 @@ regs:
     number: 832
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+      - "/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc"
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   mepc:
     url: "/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc"
     mmio: false
@@ -566,7 +894,21 @@ regs:
     number: 833
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-exception-program-counter-mepc"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcause"
+      - "/riscv-isa-manual/latest/machine.html#machine-configuration-pointer-register-mconfigptr"
+      - "/riscv-isa-manual/latest/machine.html#sec:customsys"
+      - "/riscv-isa-manual/latest/machine.html#sec:pma"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
+      debug:
+      - "/riscv-debug-spec/latest/introduction.html#context"
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-scratch-register-0-dscratch0-at-0x7b2"
   mcause:
     url: "/riscv-isa-manual/latest/machine.html#machine-cause-register-mcause"
     mmio: false
@@ -690,7 +1032,24 @@ regs:
     number: 834
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcause"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval"
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      - "/riscv-isa-manual/latest/machine.html#sec:pma"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#global-interrupt-sources"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
+      debug:
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#external-trigger-tmexttrigger-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv32-textra32-at-0x7a3"
   mtval:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-value-mtval-register"
     mmio: false
@@ -699,7 +1058,20 @@ regs:
     number: 835
     priv: MRW
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-value-register-mtval"
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      - "/riscv-isa-manual/latest/machine.html#machine-configuration-pointer-register-mconfigptr"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#privilege-modes"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-trap-instruction-register-mtinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   sscratch:
     url: "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
     mmio: false
@@ -707,7 +1079,11 @@ regs:
     number: 320
     priv: SRW
     sections:
-    - machine
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-exception-program-counter-sepc"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-exception-program-counter-vsepc"
   sepc:
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-exception-program-counter-sepc"
     mmio: false
@@ -715,7 +1091,15 @@ regs:
     number: 321
     priv: SRW
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-exception-program-counter-sepc"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:scause"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-environment-configuration-register-senvcfg"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-cause-register-vscause"
   scause:
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-cause-register-scause"
     mmio: false
@@ -731,7 +1115,7 @@ regs:
           mask: 1<<(sxlen-1)
           value: 1<<(sxlen-1)
         bits:
-        - mxlen-2
+        - sxlen-2
         - 0
         enums:
           ssi: 1
@@ -815,12 +1199,22 @@ regs:
     number: 322
     priv: SRW
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#sec:scause"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-value-stval-register"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-value-register-vstval"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
   sstatus:
     url: "/riscv-isa-manual/latest/supervisor.html#sstatus"
     mmio: false
     desc: Supervisor Status
     fields:
+      uxl: *2
       sie:
         desc: Supervisor Interrupt Enable
         bits:
@@ -836,7 +1230,25 @@ regs:
     number: 256
     priv: SRW
     sections:
-    - supervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hfence.vma"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:sv32"
+      - "/riscv-isa-manual/latest/supervisor.html#sv32algorithm"
+      n:
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+      debug:
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
   stvec:
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
     mmio: false
@@ -855,7 +1267,11 @@ regs:
     number: 261
     priv: SRW
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-scratch-register-vsscratch"
   sideleg:
     url: "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
     mmio: false
@@ -863,7 +1279,9 @@ regs:
     number: 259
     priv: SRW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+      - "/riscv-isa-manual/latest/n.html#other-csrs"
   sedeleg:
     url: "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
     mmio: false
@@ -871,7 +1289,9 @@ regs:
     number: 258
     priv: SRW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#supervisor-trap-delegation-registers-sedeleg-and-sideleg"
+      - "/riscv-isa-manual/latest/n.html#other-csrs"
   sip:
     desc: Supervisor Interrupt Pending
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
@@ -879,38 +1299,26 @@ regs:
     number: 324
     priv: SRW
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#interrupt-gateways"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      - "/riscv-isa-manual/latest/machine.html#sec:customsys"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     fields:
-      ssi:
-        desc: 'Interrupt pending: Supervisor Software Interrupt'
-        bits:
-        - 1
-        custom: false
-      sti:
-        desc: 'Interrupt pending: Supervisor Timer Interrupt'
-        bits:
-        - 5
-        custom: false
-      sei:
-        desc: 'Interrupt pending: Supervisor External Interrupt'
-        bits:
-        - 9
-        custom: false
-      usi:
-        desc: 'Interrupt pending: User Software Interrupt'
-        bits:
-        - 0
-        custom: false
-      uti:
-        desc: 'Interrupt pending: User Timer Interrupt'
-        bits:
-        - 4
-        custom: false
-      uei:
-        desc: 'Interrupt pending: User External Interrupt'
-        bits:
-        - 8
-        custom: false
+      ssi: *3
+      sti: *4
+      sei: *5
+      usi: *6
+      uti: *7
+      uei: *8
   sie:
     desc: Supervisor Interrupt Enable
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
@@ -918,7 +1326,17 @@ regs:
     number: 260
     priv: SRW
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-timers-and-performance-counters"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#hardware-performance-monitor"
+      n:
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     fields:
       ssi:
         desc: 'Interrupt enable: Supervisor Software Interrupt'
@@ -966,7 +1384,9 @@ regs:
     number: 0
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#user-status-register-ustatus"
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
   uip:
     desc: User Interrupt Pending
     url: "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
@@ -974,7 +1394,11 @@ regs:
     number: 68
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
+      plic:
+      - "/riscv-isa-manual/latest/plic.html#interrupt-gateways"
     fields:
       usi:
         desc: 'Interrupt pending: User Software Interrupt'
@@ -998,7 +1422,9 @@ regs:
     number: 4
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
+      - "/riscv-isa-manual/latest/n.html#machine-trap-delegation-registers-medeleg-and-mideleg"
     fields:
       usi:
         desc: 'Interrupt enable: User Software Interrupt'
@@ -1022,7 +1448,8 @@ regs:
     number: 64
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   uepc:
     url: "/riscv-isa-manual/latest/n.html#other-csrs"
     mmio: false
@@ -1030,7 +1457,9 @@ regs:
     number: 65
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
+      - "/riscv-isa-manual/latest/n.html#user-interrupt-registers-uip-and-uie"
   ucause:
     url: "/riscv-isa-manual/latest/n.html#other-csrs"
     mmio: false
@@ -1046,7 +1475,7 @@ regs:
           mask: 1<<(uxlen-1)
           value: 1<<(uxlen-1)
         bits:
-        - mxlen-2
+        - uxlen-2
         - 0
         enums:
           usi: 0
@@ -1127,7 +1556,8 @@ regs:
     number: 66
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   utvec:
     url: "/riscv-isa-manual/latest/n.html#other-csrs"
     mmio: false
@@ -1146,7 +1576,8 @@ regs:
     number: 5
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   utval:
     url: "/riscv-isa-manual/latest/n.html#other-csrs"
     mmio: false
@@ -1154,7 +1585,8 @@ regs:
     number: 67
     priv: URW
     sections:
-    - n
+      n:
+      - "/riscv-isa-manual/latest/n.html#n-extension-instructions"
   fflags:
     number: 1
     desc: Floating-Point Accrued Exceptions.
@@ -1162,7 +1594,18 @@ regs:
     url: "/riscv-isa-manual/latest/memory.html#sec:memory:ppopipeline"
     mmio: false
     sections:
-    - memory
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      f:
+      - "/riscv-isa-manual/latest/f.html#nan-generation-and-propagation"
+      dep-table:
+      - "/riscv-isa-manual/latest/dep-table.html#sec:source-dest-regs"
+      memory:
+      - "/riscv-isa-manual/latest/memory.html#sec:memory:ppopipeline"
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_single_width_floating_point_addsubtract_instructions"
+      debug:
+      - "/riscv-debug-spec/latest/abstract_commands.html#quick-access"
   frm:
     number: 2
     desc: Floating-Point Dynamic Rounding Mode.
@@ -1170,7 +1613,15 @@ regs:
     url: "/riscv-isa-manual/latest/dep-table.html#sec:source-dest-regs"
     mmio: false
     sections:
-    - dep-table
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      f:
+      - "/riscv-isa-manual/latest/f.html#nan-generation-and-propagation"
+      dep-table:
+      - "/riscv-isa-manual/latest/dep-table.html#sec:source-dest-regs"
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#sec-widening"
+      - "/riscv-v-spec/draft/v-spec.html#_widening_floating_pointinteger_type_convert_instructions"
   fcsr:
     number: 3
     desc: Floating-Point Control and Status
@@ -1178,7 +1629,15 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
     mmio: false
     sections:
-    - machine
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_fields_in_code_fcsr_code"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      f:
+      - "/riscv-isa-manual/latest/f.html#floating-point-control-and-status-register"
+      - "/riscv-isa-manual/latest/f.html#nan-generation-and-propagation"
+      dep-table:
+      - "/riscv-isa-manual/latest/dep-table.html#sec:source-dest-regs"
   cycle:
     number: 3072
     desc: Cycle counter for RDCYCLE instruction.
@@ -1186,7 +1645,19 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#counter-enable-register-scounteren"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      counters:
+      - "/riscv-isa-manual/latest/counters.html#zihpm-standard-extension-for-hardware-performance-counters"
+      debug:
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
   time:
     number: 3073
     desc: Timer for RDTIME instruction.
@@ -1194,7 +1665,20 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
     mmio: false
     sections:
-    - hypervisor
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#counter-enable-register-scounteren"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
+      counters:
+      - "/riscv-isa-manual/latest/counters.html#zihpm-standard-extension-for-hardware-performance-counters"
+      debug:
+      - "/riscv-debug-spec/latest/Sdext.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
   instret:
     number: 3074
     desc: Instructions-retired counter for RDINSTRET instruction.
@@ -1202,7 +1686,18 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#machine-scratch-register-mscratch"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#counter-enable-register-scounteren"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-scratch-register-sscratch"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+      counters:
+      - "/riscv-isa-manual/latest/counters.html#zihpm-standard-extension-for-hardware-performance-counters"
+      debug:
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
   hpmcounter3:
     number: 3075
     desc: Performance-monitoring counter.
@@ -1210,7 +1705,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   hpmcounter4:
     number: 3076
     desc: Performance-monitoring counter.
@@ -1218,7 +1714,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   hpmcounter31:
     number: 3103
     desc: Performance-monitoring counter.
@@ -1226,7 +1723,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   cycleh:
     number: 3200
     desc: Upper 32 bits of  cycle, RV32I only.
@@ -1234,7 +1732,10 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
   timeh:
     number: 3201
     desc: Upper 32 bits of  time, RV32I only.
@@ -1242,7 +1743,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
   instreth:
     number: 3202
     desc: Upper 32 bits of  instret, RV32I only.
@@ -1250,7 +1752,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
   hpmcounter3h:
     number: 3203
     desc: Upper 32 bits of  hpmcounter3, RV32I only.
@@ -1258,7 +1761,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   hpmcounter4h:
     number: 3204
     desc: Upper 32 bits of  hpmcounter4, RV32I only.
@@ -1266,7 +1770,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   hpmcounter31h:
     number: 3231
     desc: Upper 32 bits of  hpmcounter31, RV32I only.
@@ -1274,7 +1779,8 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   stval:
     number: 323
     desc: Supervisor bad address or instruction.
@@ -1282,7 +1788,19 @@ regs:
     url: "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-value-stval-register"
     mmio: false
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-value-stval-register"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-environment-configuration-register-senvcfg"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-instruction-register-htinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
   satp:
     number: 384
     desc: Supervisor address translation and protection.
@@ -1290,7 +1808,32 @@ regs:
     url: "/riscv-isa-manual/latest/supervisor.html#sec:satp"
     mmio: false
     sections:
-    - supervisor
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#sec:satp"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-instructions"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:sv32"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:translation"
+      - "/riscv-isa-manual/latest/supervisor.html#sv32algorithm"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:sv39"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:sv48"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-instructions"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#guest-page-faults"
+      priv-csrs:
+      - "/riscv-isa-manual/latest/priv-csrs.html#sec:csrwidthmodulation"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+      n:
+      - "/riscv-isa-manual/latest/n.html#additional-csrs"
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv64-textra64-at-0x7a3"
   hstatus:
     number: 1536
     desc: Hypervisor status register.
@@ -1298,7 +1841,19 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-environment-configuration-registers-henvcfg-and-henvcfgh"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-instructions"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hfence.vma"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
   hedeleg:
     number: 1538
     desc: Hypervisor exception delegation register.
@@ -1306,7 +1861,13 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      debug:
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
   hideleg:
     number: 1539
     desc: Hypervisor interrupt delegation register.
@@ -1314,7 +1875,14 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-delegation-registers-hedeleg-and-hideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
   hcounteren:
     number: 1542
     desc: Hypervisor counter enable.
@@ -1322,7 +1890,11 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
   hgatp:
     number: 1664
     desc: Hypervisor guest address translation and protection.
@@ -1330,7 +1902,20 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgatp"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgatp"
+      - "/riscv-isa-manual/latest/hypervisor.html#traps"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:guest-addr-translation"
+      - "/riscv-isa-manual/latest/hypervisor.html#guest-page-faults"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#svinval"
   htimedelta:
     number: 1541
     desc: Delta for VS/VU-mode timer.
@@ -1338,7 +1923,11 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
   htimedeltah:
     number: 1557
     desc: Upper 32 bits of  htimedelta, RV32I only.
@@ -1346,7 +1935,11 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-entry"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
   vsstatus:
     number: 512
     desc: Virtual supervisor status register.
@@ -1354,7 +1947,18 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-status-register-vsstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hfence.vma"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:guest-addr-translation"
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_context_status_in_vsstatus"
+      debug:
+      - "/riscv-debug-spec/latest/Sdtrig.html#memory-access-triggers"
   vsie:
     number: 516
     desc: Virtual supervisor interrupt-enable register.
@@ -1362,7 +1966,9 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
   vstvec:
     number: 517
     desc: Virtual supervisor trap handler base address.
@@ -1370,7 +1976,9 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-scratch-register-vsscratch"
   vsscratch:
     number: 576
     desc: Virtual supervisor scratch register.
@@ -1378,7 +1986,9 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-scratch-register-vsscratch"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-scratch-register-vsscratch"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-exception-program-counter-vsepc"
   vsepc:
     number: 577
     desc: Virtual supervisor exception program counter.
@@ -1386,7 +1996,10 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-exception-program-counter-vsepc"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-exception-program-counter-vsepc"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-cause-register-vscause"
   vscause:
     number: 578
     desc: Virtual supervisor trap cause.
@@ -1394,7 +2007,11 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-cause-register-vscause"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-cause-register-vscause"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-value-register-vstval"
   vstval:
     number: 579
     desc: Virtual supervisor bad address or instruction.
@@ -1402,7 +2019,10 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-value-register-vstval"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-value-register-vstval"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
   vsip:
     number: 580
     desc: Virtual supervisor interrupt pending.
@@ -1410,7 +2030,9 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-interrupt-registers-vsip-and-vsie"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
   vsatp:
     number: 640
     desc: Virtual supervisor address translation and protection.
@@ -1418,7 +2040,18 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-address-translation-and-protection-register-vsatp"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:guest-addr-translation"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-instructions"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-delegation-register-mideleg"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:nmi"
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#svinval"
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv64-textra64-at-0x7a3"
   mbase:
     number: 896
     desc: Base register.
@@ -1450,7 +2083,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   pmpcfg1:
     number: 929
     desc: Physical memory protection configuration, RV32 only.
@@ -1458,7 +2092,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   pmpcfg2:
     number: 930
     desc: Physical memory protection configuration.
@@ -1466,7 +2101,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   pmpcfg3:
     number: 931
     desc: Physical memory protection configuration, RV32 only.
@@ -1474,7 +2110,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   pmpaddr0:
     number: 944
     desc: Physical memory protection address register.
@@ -1482,7 +2119,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   pmpaddr1:
     number: 945
     desc: Physical memory protection address register.
@@ -1490,7 +2128,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
   pmpaddr15:
     number: 959
     desc: Physical memory protection address register.
@@ -1498,7 +2137,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#physical-memory-protection-csrs"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
   mhpmcounter4:
     number: 2820
     desc: Machine performance-monitoring counter.
@@ -1506,7 +2146,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmcounter31:
     number: 2847
     desc: Machine performance-monitoring counter.
@@ -1514,7 +2155,8 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mcycleh:
     number: 2944
     desc: Upper 32 bits of  mcycle, RV32I only.
@@ -1524,7 +2166,9 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   minstreth:
     number: 2946
     desc: Upper 32 bits of  minstret, RV32I only.
@@ -1534,7 +2178,9 @@ regs:
     width: 32
     arch: rv32
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-counter-inhibit-csr-mcountinhibit"
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmcounter3h:
     number: 2947
     desc: Upper 32 bits of  mhpmcounter3, RV32I only.
@@ -1544,7 +2190,8 @@ regs:
     width: 32
     arch: rv32
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmcounter4h:
     number: 2948
     desc: Upper 32 bits of  mhpmcounter4, RV32I only.
@@ -1554,7 +2201,8 @@ regs:
     width: 32
     arch: rv32
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmcounter31h:
     number: 2975
     desc: Upper 32 bits of  mhpmcounter31, RV32I only.
@@ -1564,7 +2212,8 @@ regs:
     width: 32
     arch: rv32
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   mhpmevent4:
     number: 804
     desc: Machine performance-monitoring event selector.
@@ -1578,11 +2227,19 @@ regs:
     url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
     mmio: false
     sections:
-    - machine
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
   tselect:
     number: 1952
     desc: Debug/Trace trigger register select.
     priv: MRW
+    url: "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/trigger.html#sec:mmtrigger"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-1-tdata1-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-2-tdata2-at-0x7a2"
   tdata1:
     number: 1953
     desc: First Debug/Trace trigger data register.
@@ -1590,7 +2247,16 @@ regs:
     url: "/riscv-debug-spec/latest/trigger.html#priority"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-1-tdata1-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/trigger.html#sec:mmtrigger"
+      - "/riscv-debug-spec/latest/debugger_implementation.html#handling-exceptions"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-control-tcontrol-at-0x7a5"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#instruction-count-icount-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#interrupt-trigger-itrigger-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#exception-trigger-etrigger-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv32-textra32-at-0x7a3"
   tdata2:
     number: 1954
     desc: Second Debug/Trace trigger data register.
@@ -1598,7 +2264,14 @@ regs:
     url: "/riscv-debug-spec/latest/trigger.html#priority"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-2-tdata2-at-0x7a2"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/debugger_implementation.html#handling-exceptions"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#instruction-count-icount-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#exception-trigger-etrigger-at-0x7a1"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv32-textra32-at-0x7a3"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-3-tdata3-at-0x7a3"
   tdata3:
     number: 1955
     desc: Third Debug/Trace trigger data register.
@@ -1606,11 +2279,23 @@ regs:
     url: "/riscv-debug-spec/latest/trigger.html#priority"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-data-3-tdata3-at-0x7a3"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv64-textra64-at-0x7a3"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-info-tinfo-at-0x7a4"
   dcsr:
     number: 1968
     desc: Debug control and status register.
     priv: DRW
+    url: "/riscv-debug-spec/latest/core_registers.html#debug-control-and-status-dcsr-at-0x7b0"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/core_registers.html#debug-control-and-status-dcsr-at-0x7b0"
+      - "/riscv-debug-spec/latest/debug_module.html#dmi"
+      - "/riscv-debug-spec/latest/core_debug.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/core_debug.html#xlen"
+      - "/riscv-debug-spec/latest/debugger_implementation.html#accessing-registers"
   dpc:
     number: 1969
     desc: Debug PC.
@@ -1618,7 +2303,16 @@ regs:
     url: "/riscv-debug-spec/latest/core_debug.html#load-reservedstore-conditional-instructions"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/core_debug.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-pc-dpc-at-0x7b1"
+      - "/riscv-debug-spec/latest/Sdext.html#load-reservedstore-conditional-instructions"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-control-and-status-dcsr-at-0x7b0"
+      - "/riscv-debug-spec/latest/debug_module.html#dmi"
+      - "/riscv-debug-spec/latest/debug_module.html#overview-of-states"
+      - "/riscv-debug-spec/latest/core_debug.html#xlen"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-scratch-register-0-dscratch0-at-0x7b2"
+      - "/riscv-debug-spec/latest/abstract_commands.html#quick-access"
   dscratch0:
     number: 1970
     desc: Debug scratch register 0.
@@ -1626,7 +2320,10 @@ regs:
     url: "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-scratch-register-0-dscratch0-at-0x7b2"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-control-and-status-dcsr-at-0x7b0"
   dscratch1:
     number: 1971
     desc: Debug scratch register 1.
@@ -1634,7 +2331,10 @@ regs:
     url: "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
     mmio: false
     sections:
-    - debug
+      debug:
+      - "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-scratch-register-1-dscratch1-at-0x7b3"
+      - "/riscv-debug-spec/latest/core_registers.html#debug-control-and-status-dcsr-at-0x7b0"
   hie:
     number: 1540
     desc: Hypervisor interrupt-enable register.
@@ -1642,7 +2342,13 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
   hgeie:
     number: 1543
     desc: Hypervisor guest external interrupt-enable register.
@@ -1650,7 +2356,10 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-environment-configuration-registers-henvcfg-and-henvcfgh"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
   htval:
     number: 1603
     desc: Hypervisor bad guest physical address.
@@ -1658,7 +2367,14 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-value-register-htval"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-instruction-register-htinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-level-csrs"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
   hip:
     number: 1604
     desc: Hypervisor interrupt pending.
@@ -1666,7 +2382,13 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#virtual-supervisor-trap-vector-base-address-register-vstvec"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-interrupt-registers-mip-and-mie"
   htinst:
     number: 1610
     desc: Hypervisor trap instruction (transformed).
@@ -1674,15 +2396,24 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-trap-instruction-register-htinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgatp"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
   hgeip:
-    number: 3591
+    number: 3602
     desc: Hypervisor guest external interrupt pending.
     priv: HRO
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-environment-configuration-registers-henvcfg-and-henvcfgh"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
   mtinst:
     number: 842
     desc: Machine trap instruction (transformed).
@@ -1690,7 +2421,13 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-trap-instruction-register-mtinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:two-stage-translation"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
   mtval2:
     number: 843
     desc: Machine bad guest physical address.
@@ -1698,4 +2435,762 @@ regs:
     url: "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
     mmio: false
     sections:
-    - hypervisor
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-second-trap-value-register-mtval2"
+      - "/riscv-isa-manual/latest/hypervisor.html#trap-return"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-status-registers-mstatus-and-mstatush"
+      - "/riscv-isa-manual/latest/hypervisor.html#machine-trap-instruction-register-mtinst"
+      - "/riscv-isa-manual/latest/hypervisor.html#memory-management-fences"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:tinst-vals"
+  senvcfg:
+    number: 266
+    desc: Supervisor environment configuration register.
+    priv: SRW
+    url: "/riscv-isa-manual/latest/supervisor.html#supervisor-environment-configuration-register-senvcfg"
+    sections:
+      supervisor:
+      - "/riscv-isa-manual/latest/supervisor.html#supervisor-environment-configuration-register-senvcfg"
+      - "/riscv-isa-manual/latest/supervisor.html#sec:satp"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+  scontext:
+    number: 1448
+    desc: Supervisor-mode context register.
+    priv: SRW
+    url: "/riscv-debug-spec/latest/hwbp_registers.html#supervisor-context-scontext-at-0x7aa"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#supervisor-context-scontext-at-0x7aa"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#supervisor-context-scontext-at-0x5a8"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv64-textra64-at-0x7a3"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#match-control-mcontrol-at-0x7a1"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+  hvip:
+    number: 1605
+    desc: Hypervisor virtual interrupt pending.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+    sections:
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#sec:hgeinterruptregs"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+  henvcfg:
+    number: 1546
+    desc: Hypervisor environment configuration register.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+  henvcfgh:
+    number: 1562
+    desc: Additional hypervisor env. conf. register, RV32 only.
+    priv: HRW
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+    sections:
+      hypervisor:
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-counter-enable-register-hcounteren"
+      - "/riscv-isa-manual/latest/hypervisor.html#hypervisor-status-register-hstatus"
+  hcontext:
+    number: 1704
+    desc: Hypervisor-mode context register.
+    priv: HRW
+    url: "/riscv-debug-spec/latest/hwbp_registers.html#hypervisor-context-hcontext-at-0x6a8"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#hypervisor-context-hcontext-at-0x6a8"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+  mconfigptr:
+    number: 3861
+    desc: Pointer to configuration data structure.
+    priv: MRO
+    url: "/riscv-isa-manual/latest/machine.html#machine-configuration-pointer-register-mconfigptr"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-configuration-pointer-register-mconfigptr"
+      - "/riscv-isa-manual/latest/machine.html#machine-environment-configuration-registers-menvcfg-and-menvcfgh"
+  menvcfg:
+    number: 778
+    desc: Machine environment configuration register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+  menvcfgh:
+    number: 794
+    desc: Additional machine env. conf. register, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+  mseccfg:
+    number: 1863
+    desc: Machine security configuration register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#sec:mseccfg"
+      - "/riscv-isa-manual/latest/machine.html#machine-level-memory-mapped-registers"
+  mseccfgh:
+    number: 1879
+    desc: Additional machine security conf. register, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#machine-level-memory-mapped-registers"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-level-memory-mapped-registers"
+  pmpcfg14:
+    number: 942
+    desc: Physical memory protection configuration.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpcfg15:
+    number: 943
+    desc: Physical memory protection configuration, RV32 only.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr63:
+    number: 1007
+    desc: Physical memory protection address register.
+    priv: MRW
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+    sections:
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  mcontext:
+    number: 1960
+    desc: Machine-mode context register.
+    priv: MRW
+    url: "/riscv-debug-spec/latest/hwbp_registers.html#machine-context-mcontext-at-0x7a8"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/hwbp_registers.html#machine-context-mcontext-at-0x7a8"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-select-tselect-at-0x7a0"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#trigger-extra-rv64-textra64-at-0x7a3"
+      - "/riscv-debug-spec/latest/hwbp_registers.html#supervisor-context-scontext-at-0x7aa"
+  vstart:
+    number: 8
+    priv: URW
+    url: "/riscv-v-spec/draft/v-spec.html#_vector_start_index_csr_vstart"
+    sections:
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_start_index_csr_vstart"
+      - "/riscv-v-spec/draft/v-spec.html#_made_clear_that_vstart_and_vcsr_are_xlen_bit_wide_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_rounding_mode_register_vxrm"
+      - "/riscv-v-spec/draft/v-spec.html#_mapping_of_vector_elements_to_vector_register_state"
+      - "/riscv-v-spec/draft/v-spec.html#sec-inactive-defs"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-config"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_loadstore_instruction_encoding"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_strided_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-aos"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_loadstore_whole_register_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_memory_alignment_constraints"
+      - "/riscv-v-spec/draft/v-spec.html#sec-widening"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_integer_move_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float-move"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-integer-reduce"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_count_population_in_mask_vcpop_m"
+      - "/riscv-v-spec/draft/v-spec.html#_vfirst_find_first_set_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#_vmsbf_m_set_before_first_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#_vmsif_m_set_including_first_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#_vmsof_m_set_only_first_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#_example_using_vector_mask_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_element_index_instruction"
+      - "/riscv-v-spec/draft/v-spec.html#_floating_point_scalar_move_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_slide_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_register_gather_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_whole_vector_register_move"
+      - "/riscv-v-spec/draft/v-spec.html#_exception_handling"
+      - "/riscv-v-spec/draft/v-spec.html#_precise_vector_traps"
+      - "/riscv-v-spec/draft/v-spec.html#_imprecise_vector_traps"
+      - "/riscv-v-spec/draft/v-spec.html#_selectable_preciseimprecise_traps"
+      - "/riscv-v-spec/draft/v-spec.html#_fractional_lmul_example"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+      debug:
+      - "/riscv-debug-spec/latest/Sdext.html#resume"
+  vxsat:
+    number: 9
+    url: "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_saturation_flag_vxsat"
+    priv: URW
+    sections:
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_saturation_flag_vxsat"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_control_and_status_register_vcsr"
+      - "/riscv-v-spec/draft/v-spec.html#_state_of_vector_extension_at_reset"
+      - "/riscv-v-spec/draft/v-spec.html#_mapping_of_vector_elements_to_vector_register_state"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_single_width_averaging_add_and_subtract"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_single_width_scaling_shift_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float"
+      - "/riscv-v-spec/draft/v-spec.html#_fractional_lmul_example"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+  vxrm:
+    number: 10
+    url: "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_rounding_mode_register_vxrm"
+    priv: URW
+    sections:
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_rounding_mode_register_vxrm"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_state_of_vector_extension_at_reset"
+      - "/riscv-v-spec/draft/v-spec.html#_mapping_of_vector_elements_to_vector_register_state"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_integer_divide_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_single_width_fractional_multiply_with_rounding_and_saturation"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_single_width_scaling_shift_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_narrowing_fixed_point_clip_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float"
+      - "/riscv-v-spec/draft/v-spec.html#_fractional_lmul_example"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+  hpmcounter5:
+    number: 3077
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter6:
+    number: 3078
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter7:
+    number: 3079
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter8:
+    number: 3080
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter9:
+    number: 3081
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter10:
+    number: 3082
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter11:
+    number: 3083
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter12:
+    number: 3084
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter13:
+    number: 3085
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter14:
+    number: 3086
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter15:
+    number: 3087
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter16:
+    number: 3088
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter17:
+    number: 3089
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter18:
+    number: 3090
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter19:
+    number: 3091
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter20:
+    number: 3092
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter21:
+    number: 3093
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter22:
+    number: 3094
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter23:
+    number: 3095
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter24:
+    number: 3096
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter25:
+    number: 3097
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter26:
+    number: 3098
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter27:
+    number: 3099
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter28:
+    number: 3100
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter29:
+    number: 3101
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter30:
+    number: 3102
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  vl:
+    number: 3104
+    url: "/riscv-v-spec/draft/v-spec.html#_constraints_on_setting_vl"
+    priv: URO
+    sections:
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_constraints_on_setting_vl"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_length_register_vl"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_byte_length_vlenb"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_start_index_csr_vstart"
+      - "/riscv-v-spec/draft/v-spec.html#_mapping_of_vector_elements_to_vector_register_state"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-config"
+      - "/riscv-v-spec/draft/v-spec.html#_vtype_encoding"
+      - "/riscv-v-spec/draft/v-spec.html#_avl_encoding"
+      - "/riscv-v-spec/draft/v-spec.html#example-stripmine-sew"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_strided_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-aos"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_loadstore_whole_register_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_memory_alignment_constraints"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_arithmetic_instruction_formats"
+      - "/riscv-v-spec/draft/v-spec.html#sec-widening"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_integer_move_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float-move"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-integer-reduce"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float-reduce-widen"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_count_population_in_mask_vcpop_m"
+      - "/riscv-v-spec/draft/v-spec.html#_vfirst_find_first_set_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#_vmsbf_m_set_before_first_mask_bit"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-permute"
+      - "/riscv-v-spec/draft/v-spec.html#_floating_point_scalar_move_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_slide_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_register_gather_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_compress_instruction"
+      - "/riscv-v-spec/draft/v-spec.html#_whole_vector_register_move"
+      - "/riscv-v-spec/draft/v-spec.html#_exception_handling"
+      - "/riscv-v-spec/draft/v-spec.html#_fractional_lmul_example"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+  vtype:
+    number: 3105
+    url: "/riscv-v-spec/draft/v-spec.html#_vtype_encoding"
+    priv: URO
+    sections:
+      v-spec:
+      - "/riscv-v-spec/draft/v-spec.html#_vtype_encoding"
+      - "/riscv-v-spec/draft/v-spec.html#_moved_discussion_of_illegal_vtype_values_into_section_on_configuration_setting_instructions_and_expanded_explanations"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_type_register_vtype"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_registers"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_length_register_vl"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_start_index_csr_vstart"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_fixed_point_rounding_mode_register_vxrm"
+      - "/riscv-v-spec/draft/v-spec.html#_mapping_of_vector_elements_to_vector_register_state"
+      - "/riscv-v-spec/draft/v-spec.html#sec-mask-register-layout"
+      - "/riscv-v-spec/draft/v-spec.html#sec-inactive-defs"
+      - "/riscv-v-spec/draft/v-spec.html#_avl_encoding"
+      - "/riscv-v-spec/draft/v-spec.html#_constraints_on_setting_vl"
+      - "/riscv-v-spec/draft/v-spec.html#example-stripmine-sew"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_loadstore_addressing_modes"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_unit_stride_instructions"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_memory_alignment_constraints"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-integer"
+      - "/riscv-v-spec/draft/v-spec.html#sec-vector-float-reduce-widen"
+      - "/riscv-v-spec/draft/v-spec.html#_vector_count_population_in_mask_vcpop_m"
+      - "/riscv-v-spec/draft/v-spec.html#_exception_handling"
+      - "/riscv-v-spec/draft/v-spec.html#_fractional_lmul_example"
+      machine:
+      - "/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"
+  bsstatus:
+    number: 512
+    priv: HRW
+  bsie:
+    number: 516
+    priv: HRW
+  bstvec:
+    number: 517
+    priv: HRW
+  bsscratch:
+    number: 576
+    priv: HRW
+  bsepc:
+    number: 577
+    priv: HRW
+  bscause:
+    number: 578
+    priv: HRW
+  bstval:
+    number: 579
+    priv: HRW
+  bsip:
+    number: 580
+    priv: HRW
+  bsatp:
+    priv: HRW
+    number: 640
+  utvt:
+    number: 7
+  unxti:
+    number: 69
+  uintstatus:
+    number: 70
+  uscratchcsw:
+    number: 72
+  uscratchcswl:
+    number: 73
+  stvt:
+    number: 263
+  snxti:
+    number: 325
+  sintstatus:
+    number: 326
+  sscratchcsw:
+    number: 328
+  sscratchcswl:
+    number: 329
+  mtvt:
+    number: 775
+  mnxti:
+    number: 837
+  mintstatus:
+    number: 838
+  mscratchcsw:
+    number: 840
+  mscratchcswl:
+    number: 841
+  pmpaddr2:
+    number: 946
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr3:
+    number: 947
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr4:
+    number: 948
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr5:
+    number: 949
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr6:
+    number: 950
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr7:
+    number: 951
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr8:
+    number: 952
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr9:
+    number: 953
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr10:
+    number: 954
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr11:
+    number: 955
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr12:
+    number: 956
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr13:
+    number: 957
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  pmpaddr14:
+    number: 958
+    url: "/riscv-isa-manual/latest/machine.html#pmp-vmem"
+  dscratch:
+    number: 1970
+    url: "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+    sections:
+      debug:
+      - "/riscv-debug-spec/latest/dm_registers.html#hart-array-window-select-hawindowsel-at-0x14"
+  mhpmcounter5:
+    number: 2821
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter6:
+    number: 2822
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter7:
+    number: 2823
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter8:
+    number: 2824
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter9:
+    number: 2825
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter10:
+    number: 2826
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter11:
+    number: 2827
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter12:
+    number: 2828
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter13:
+    number: 2829
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter14:
+    number: 2830
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter15:
+    number: 2831
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter16:
+    number: 2832
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter17:
+    number: 2833
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter18:
+    number: 2834
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter19:
+    number: 2835
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter20:
+    number: 2836
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter21:
+    number: 2837
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter22:
+    number: 2838
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter23:
+    number: 2839
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter24:
+    number: 2840
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter25:
+    number: 2841
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter26:
+    number: 2842
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter27:
+    number: 2843
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter28:
+    number: 2844
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter29:
+    number: 2845
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter30:
+    number: 2846
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmevent5:
+    number: 805
+  mhpmevent6:
+    number: 806
+  mhpmevent7:
+    number: 807
+  mhpmevent8:
+    number: 808
+  mhpmevent9:
+    number: 809
+  mhpmevent10:
+    number: 810
+  mhpmevent11:
+    number: 811
+  mhpmevent12:
+    number: 812
+  mhpmevent13:
+    number: 813
+  mhpmevent14:
+    number: 814
+  mhpmevent15:
+    number: 815
+  mhpmevent16:
+    number: 816
+  mhpmevent17:
+    number: 817
+  mhpmevent18:
+    number: 818
+  mhpmevent19:
+    number: 819
+  mhpmevent20:
+    number: 820
+  mhpmevent21:
+    number: 821
+  mhpmevent22:
+    number: 822
+  mhpmevent23:
+    number: 823
+  mhpmevent24:
+    number: 824
+  mhpmevent25:
+    number: 825
+  mhpmevent26:
+    number: 826
+  mhpmevent27:
+    number: 827
+  mhpmevent28:
+    number: 828
+  mhpmevent29:
+    number: 829
+  mhpmevent30:
+    number: 830
+  hpmcounter5h:
+    number: 3205
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter6h:
+    number: 3206
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter7h:
+    number: 3207
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter8h:
+    number: 3208
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter9h:
+    number: 3209
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter10h:
+    number: 3210
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter11h:
+    number: 3211
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter12h:
+    number: 3212
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter13h:
+    number: 3213
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter14h:
+    number: 3214
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter15h:
+    number: 3215
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter16h:
+    number: 3216
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter17h:
+    number: 3217
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter18h:
+    number: 3218
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter19h:
+    number: 3219
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter20h:
+    number: 3220
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter21h:
+    number: 3221
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter22h:
+    number: 3222
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter23h:
+    number: 3223
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter24h:
+    number: 3224
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter25h:
+    number: 3225
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter26h:
+    number: 3226
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter27h:
+    number: 3227
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter28h:
+    number: 3228
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter29h:
+    number: 3229
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  hpmcounter30h:
+    number: 3230
+    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor-time-delta-registers-htimedelta-htimedeltah"
+  mhpmcounter5h:
+    number: 2949
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter6h:
+    number: 2950
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter7h:
+    number: 2951
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter8h:
+    number: 2952
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter9h:
+    number: 2953
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter10h:
+    number: 2954
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter11h:
+    number: 2955
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter12h:
+    number: 2956
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter13h:
+    number: 2957
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter14h:
+    number: 2958
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter15h:
+    number: 2959
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter16h:
+    number: 2960
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter17h:
+    number: 2961
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter18h:
+    number: 2962
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter19h:
+    number: 2963
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter20h:
+    number: 2964
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter21h:
+    number: 2965
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter22h:
+    number: 2966
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter23h:
+    number: 2967
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter24h:
+    number: 2968
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter25h:
+    number: 2969
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter26h:
+    number: 2970
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter27h:
+    number: 2971
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter28h:
+    number: 2972
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter29h:
+    number: 2973
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
+  mhpmcounter30h:
+    number: 2974
+    url: "/riscv-isa-manual/latest/machine.html#sec:mcounteren"
