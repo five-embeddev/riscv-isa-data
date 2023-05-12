@@ -332,8 +332,7 @@ extension:
     order: 8
 
   - name: L
-    url: "/riscv-isa-manual/latest/l.html"
-    status: draft
+    status: not_specified
     misa: 11
     desc: Decimal Floating-Point extension
     order: 6
@@ -357,9 +356,8 @@ extension:
     aliased: G
 
   - name: N
-    url: "/riscv-isa-manual/latest/n.html"
     version: 1.1
-    status: draft
+    status: not_specified
     misa: 13
     desc: User-level interrupts supported
     order: 12
@@ -387,8 +385,7 @@ extension:
     gcc_macro: __riscv_flen=128
 
   - name: T
-    url: "/riscv-isa-manual/latest/t.html"
-    status: draft
+    status: not_specified
     misa: 21
     desc: Transactional Memory extension
     order: 9
