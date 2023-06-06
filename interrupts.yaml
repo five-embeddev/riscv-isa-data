@@ -1,463 +1,462 @@
 ---
 machine_level:
-    name: machine_level
-    desc: The machine-level interrupts handle root interrupt sources.
-    url: /riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
+  name: machine_level
+  desc: The machine-level interrupts handle root interrupt sources.
+  url: /riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
 interrupts:
- - name: msi
-   custom: FALSE
-   idx: 3
-   desc: Machine Software Interrupt
-   mode: m
- - name: mti
-   custom: FALSE
-   desc: Machine Timer Interrupt
-   idx: 7
-   mode: m
- - name: mei
-   custom: FALSE
-   desc: Machine External Interrupt
-   idx: 11
-   mode: m
- - name: ssi
-   custom: FALSE
-   idx: 1
-   desc: Supervisor Software Interrupt
-   mode: s
- - name: sti
-   custom: FALSE
-   desc: Supervisor Timer Interrupt
-   idx: 5
-   mode: s
- - name: sei
-   custom: FALSE
-   desc: Supervisor External Interrupt
-   idx: 9
-   mode: s
- - name: usi
-   custom: FALSE
-   idx: 0
-   desc: User Software Interrupt
-   mode: u
- - name: uti
-   custom: FALSE
-   desc: User Timer Interrupt
-   idx: 4
-   mode: u
- - name: uei
-   custom: FALSE
-   desc: User External Interrupt
-   idx: 8
-   mode: u
- - name: platform_defined16
-   custom: TRUE
-   idx: 16
-   mode: m
-   desc: Optional platform defined interrupt source 0.
- - name: platform_defined17
-   custom: TRUE
-   idx: 17
-   mode: m
-   desc: Optional platform defined interrupt source 1
- - name: platform_defined18
-   custom: TRUE
-   idx: 18
-   mode: m
-   desc: Optional platform defined interrupt source 2
- - name: platform_defined19
-   custom: TRUE
-   idx: 19
-   mode: m
-   desc: Optional platform defined interrupt source 3
- - name: platform_defined20
-   custom: TRUE
-   idx: 20
-   mode: m
-   desc: Optional platform defined interrupt source 4
- - name: platform_defined21
-   custom: TRUE
-   idx: 21
-   mode: m
-   desc: Optional platform defined interrupt source 5
- - name: platform_defined22
-   custom: TRUE
-   idx: 22
-   mode: m
-   desc: Optional platform defined interrupt source 6
- - name: platform_defined23
-   custom: TRUE
-   idx: 23
-   mode: m
-   desc: Optional platform defined interrupt source 7
- - name: platform_defined24
-   custom: TRUE
-   idx: 24
-   mode: m
-   desc: Optional platform defined interrupt source 8
- - name: platform_defined25
-   custom: TRUE
-   idx: 25
-   mode: m
-   desc: Optional platform defined interrupt source 9
- - name: platform_defined26
-   custom: TRUE
-   idx: 26
-   mode: m
-   desc: Optional platform defined interrupt source 10
- - name: platform_defined27
-   custom: TRUE
-   idx: 27
-   mode: m
-   desc: Optional platform defined interrupt source 11
- - name: platform_defined28
-   custom: TRUE
-   idx: 28
-   mode: m
-   desc: Optional platform defined interrupt source 12
- - name: platform_defined29
-   custom: TRUE
-   idx: 29
-   mode: m
-   desc: Optional platform defined interrupt source 13
- - name: platform_defined30
-   custom: TRUE
-   idx: 30
-   mode: m
-   desc: Optional platform defined interrupt source 14
- - name: platform_defined31
-   custom: TRUE
-   idx: 31
-   mode: m
-   desc: Optional platform defined interrupt source 15
+  - name: msi
+    custom: false
+    idx: 3
+    desc: Machine Software Interrupt
+    mode: m
+  - name: mti
+    custom: false
+    desc: Machine Timer Interrupt
+    idx: 7
+    mode: m
+  - name: mei
+    custom: false
+    desc: Machine External Interrupt
+    idx: 11
+    mode: m
+  - name: ssi
+    custom: false
+    idx: 1
+    desc: Supervisor Software Interrupt
+    mode: s
+  - name: sti
+    custom: false
+    desc: Supervisor Timer Interrupt
+    idx: 5
+    mode: s
+  - name: sei
+    custom: false
+    desc: Supervisor External Interrupt
+    idx: 9
+    mode: s
+  - name: usi
+    custom: false
+    idx: 0
+    desc: User Software Interrupt
+    mode: u
+  - name: uti
+    custom: false
+    desc: User Timer Interrupt
+    idx: 4
+    mode: u
+  - name: uei
+    custom: false
+    desc: User External Interrupt
+    idx: 8
+    mode: u
+  - name: platform_defined16
+    custom: true
+    idx: 16
+    mode: m
+    desc: Optional platform defined interrupt source 0.
+  - name: platform_defined17
+    custom: true
+    idx: 17
+    mode: m
+    desc: Optional platform defined interrupt source 1
+  - name: platform_defined18
+    custom: true
+    idx: 18
+    mode: m
+    desc: Optional platform defined interrupt source 2
+  - name: platform_defined19
+    custom: true
+    idx: 19
+    mode: m
+    desc: Optional platform defined interrupt source 3
+  - name: platform_defined20
+    custom: true
+    idx: 20
+    mode: m
+    desc: Optional platform defined interrupt source 4
+  - name: platform_defined21
+    custom: true
+    idx: 21
+    mode: m
+    desc: Optional platform defined interrupt source 5
+  - name: platform_defined22
+    custom: true
+    idx: 22
+    mode: m
+    desc: Optional platform defined interrupt source 6
+  - name: platform_defined23
+    custom: true
+    idx: 23
+    mode: m
+    desc: Optional platform defined interrupt source 7
+  - name: platform_defined24
+    custom: true
+    idx: 24
+    mode: m
+    desc: Optional platform defined interrupt source 8
+  - name: platform_defined25
+    custom: true
+    idx: 25
+    mode: m
+    desc: Optional platform defined interrupt source 9
+  - name: platform_defined26
+    custom: true
+    idx: 26
+    mode: m
+    desc: Optional platform defined interrupt source 10
+  - name: platform_defined27
+    custom: true
+    idx: 27
+    mode: m
+    desc: Optional platform defined interrupt source 11
+  - name: platform_defined28
+    custom: true
+    idx: 28
+    mode: m
+    desc: Optional platform defined interrupt source 12
+  - name: platform_defined29
+    custom: true
+    idx: 29
+    mode: m
+    desc: Optional platform defined interrupt source 13
+  - name: platform_defined30
+    custom: true
+    idx: 30
+    mode: m
+    desc: Optional platform defined interrupt source 14
+  - name: platform_defined31
+    custom: true
+    idx: 31
+    mode: m
+    desc: Optional platform defined interrupt source 15
 exceptions:
- - desc: Instruction address misaligned	
-   value: 0	
-   priority: 4
-   modes: ["m","s","u"]
-   macro: INSTRUCTION_ADDRESS_MISALIGNED
- - desc: Instruction access fault	
-   value: 1	
-   priority: 2
-   modes: ["m","s","u"]
-   macro: INSTRUCTION_ACCESS_FAULT
- - desc: Illegal instruction	
-   value: 2	
-   priority: 3
-   modes: ["m","s","u"]
-   macro: ILLEGAL_INSTRUCTION
- - desc: Breakpoint	(Instruction address)
-   value: 3	
-   priority: 0
-   modes: ["m","s","u"]
-   macro: BREAKPOINT
- - desc: Breakpoint	(Environment)
-   value: 3	
-   priority: 6
-   modes: ["m","s","u"]
-   macro: BREAKPOINT
- - desc: Breakpoint	(Load/Store/AMO Address)
-   value: 3	
-   priority: 7
-   modes: ["m","s","u"]
-   macro: BREAKPOINT
- - desc: Load address misaligned	
-   value: 4	
-   priority: 9
-   modes: ["m","s","u"]
-   macro: LOAD_ADDRESS_MISALIGNED
- - desc: Load access fault	
-   value: 5	
-   priority: 13
-   modes: ["m","s","u"]
-   macro: LOAD_ACCESS_FAULT
- - desc: Store/AMO address misaligned	
-   value: 6	
-   priority: 8
-   modes: ["m","s","u"]
-   macro: STORE_AMO_ADDRESS_MISALIGNED	
- - desc: Store/AMO access fault	
-   value: 7	
-   priority: 12
-   modes: ["m","s","u"]
-   macro: STORE_AMO_ACCESS_FAULT
- - desc: Environment call from U-mode	
-   value: 8	
-   priority: 5
-   modes: ["m","s","u"]
-   macro: ENVIRONMENT_CALL_FROM_U_MODE
- - desc: Environment call from S-mode	
-   value: 9	
-   priority: 5
-   modes: ["m","s","u"]
-   macro: ENVIRONMENT_CALL_FROM_S_MODE
- - desc: Reserved	
-   value: 10	
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED10
- - desc: Environment call from M-mode	
-   value: 11	
-   priority: 5
-   modes: ["m"]
-   macro: ENVIRONMENT_CALL_FROM_M_MODE
- - desc: Instruction page fault	
-   value: 12	
-   priority: 1
-   modes: ["m","s","u"]
-   macro: INSTRUCTION_PAGE_FAULT
- - desc: Load page fault	
-   value: 13	
-   priority: 11
-   modes: ["m","s","u"]
-   macro: LOAD_PAGE_FAULT
- - desc: Reserved	
-   value: 14	
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED14
- - desc: Store/AMO page fault	
-   value: 15	
-   priority: 10
-   modes: ["m","s","u"]
-   macro: STORE_AMO_PAGE_FAULT
- - desc: Reserved	16
-   value: 16
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED16
- - desc: Reserved	17
-   value: 17
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED17
- - desc: Reserved	18
-   value: 18
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED18
- - desc: Reserved	19
-   value: 19
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED19
- - desc: Reserved	20
-   value: 20
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED20
- - desc: Reserved	21
-   value: 21
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED21
- - desc: Reserved	22
-   value: 22
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED22
- - desc: Reserved	23
-   value: 23
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED23
- - desc: Designated for custom use	24
-   value: 24
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM24
- - desc: Designated for custom use	25
-   value: 25
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM25
- - desc: Designated for custom use	26
-   value: 26
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM26
- - desc: Designated for custom use	27
-   value: 27
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM27
- - desc: Designated for custom use	28
-   value: 28
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM28
- - desc: Designated for custom use	29
-   value: 29
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM29
- - desc: Designated for custom use	30
-   value: 30
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM30
- - desc: Designated for custom use	31
-   value: 31
-   priority: 64
-   modes: ["m","s","u"]
-   macro: CUSTOM31
- - desc: Reserved	32
-   value: 32
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED32
- - desc: Reserved	33
-   value: 33
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED33
- - desc: Reserved	34
-   value: 34
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED34
- - desc: Reserved	35
-   value: 35
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED35
- - desc: Reserved	36
-   value: 36
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED36
- - desc: Reserved	37
-   value: 37
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED37
- - desc: Reserved	38
-   value: 38
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED38
- - desc: Reserved	39
-   value: 39
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED39
- - desc: Reserved	40
-   value: 40
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED40
- - desc: Reserved	41
-   value: 41
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED41
- - desc: Reserved	42
-   value: 42
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED42
- - desc: Reserved	43
-   value: 43
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED43
- - desc: Reserved	44
-   value: 44
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED44
- - desc: Reserved	45
-   value: 45
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED45
- - desc: Reserved	46
-   value: 46
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED46
- - desc: Reserved	47
-   value: 47
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED47
- - desc: Designated for custom use	48
-   value: 48
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED48
- - desc: Designated for custom use	49
-   value: 49
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED49
- - desc: Designated for custom use	50
-   value: 50
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED50
- - desc: Designated for custom use	51
-   value: 51
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED51
- - desc: Designated for custom use	52
-   value: 52
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED52
- - desc: Designated for custom use	53
-   value: 53
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED53
- - desc: Designated for custom use	54
-   value: 54
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED54
- - desc: Designated for custom use	55
-   value: 55
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED55
- - desc: Designated for custom use	56
-   value: 56
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED56
- - desc: Designated for custom use	57
-   value: 57
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED57
- - desc: Designated for custom use	58
-   value: 58
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED58
- - desc: Designated for custom use	59
-   value: 59
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED59
- - desc: Designated for custom use	60
-   value: 60
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED60
- - desc: Designated for custom use	61
-   value: 61
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED61
- - desc: Designated for custom use	62
-   value: 62
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED62
- - desc: Designated for custom use	63
-   value: 63
-   priority: 64
-   modes: ["m","s","u"]
-   macro: RESERVED63
-
+  - desc: Instruction address misaligned
+    value: 0
+    priority: 4
+    modes: [m, s, u]
+    macro: INSTRUCTION_ADDRESS_MISALIGNED
+  - desc: Instruction access fault
+    value: 1
+    priority: 2
+    modes: [m, s, u]
+    macro: INSTRUCTION_ACCESS_FAULT
+  - desc: Illegal instruction
+    value: 2
+    priority: 3
+    modes: [m, s, u]
+    macro: ILLEGAL_INSTRUCTION
+  - desc: Breakpoint (Instruction address)
+    value: 3
+    priority: 0
+    modes: [m, s, u]
+    macro: BREAKPOINT
+  - desc: Breakpoint (Environment)
+    value: 3
+    priority: 6
+    modes: [m, s, u]
+    macro: BREAKPOINT
+  - desc: Breakpoint (Load/Store/AMO Address)
+    value: 3
+    priority: 7
+    modes: [m, s, u]
+    macro: BREAKPOINT
+  - desc: Load address misaligned
+    value: 4
+    priority: 9
+    modes: [m, s, u]
+    macro: LOAD_ADDRESS_MISALIGNED
+  - desc: Load access fault
+    value: 5
+    priority: 13
+    modes: [m, s, u]
+    macro: LOAD_ACCESS_FAULT
+  - desc: Store/AMO address misaligned
+    value: 6
+    priority: 8
+    modes: [m, s, u]
+    macro: STORE_AMO_ADDRESS_MISALIGNED
+  - desc: Store/AMO access fault
+    value: 7
+    priority: 12
+    modes: [m, s, u]
+    macro: STORE_AMO_ACCESS_FAULT
+  - desc: Environment call from U-mode
+    value: 8
+    priority: 5
+    modes: [m, s, u]
+    macro: ENVIRONMENT_CALL_FROM_U_MODE
+  - desc: Environment call from S-mode
+    value: 9
+    priority: 5
+    modes: [m, s, u]
+    macro: ENVIRONMENT_CALL_FROM_S_MODE
+  - desc: Reserved
+    value: 10
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED10
+  - desc: Environment call from M-mode
+    value: 11
+    priority: 5
+    modes: [m]
+    macro: ENVIRONMENT_CALL_FROM_M_MODE
+  - desc: Instruction page fault
+    value: 12
+    priority: 1
+    modes: [m, s, u]
+    macro: INSTRUCTION_PAGE_FAULT
+  - desc: Load page fault
+    value: 13
+    priority: 11
+    modes: [m, s, u]
+    macro: LOAD_PAGE_FAULT
+  - desc: Reserved
+    value: 14
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED14
+  - desc: Store/AMO page fault
+    value: 15
+    priority: 10
+    modes: [m, s, u]
+    macro: STORE_AMO_PAGE_FAULT
+  - desc: Reserved 16
+    value: 16
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED16
+  - desc: Reserved 17
+    value: 17
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED17
+  - desc: Reserved 18
+    value: 18
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED18
+  - desc: Reserved 19
+    value: 19
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED19
+  - desc: Reserved 20
+    value: 20
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED20
+  - desc: Reserved 21
+    value: 21
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED21
+  - desc: Reserved 22
+    value: 22
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED22
+  - desc: Reserved 23
+    value: 23
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED23
+  - desc: Designated for custom use 24
+    value: 24
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM24
+  - desc: Designated for custom use 25
+    value: 25
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM25
+  - desc: Designated for custom use 26
+    value: 26
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM26
+  - desc: Designated for custom use 27
+    value: 27
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM27
+  - desc: Designated for custom use 28
+    value: 28
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM28
+  - desc: Designated for custom use 29
+    value: 29
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM29
+  - desc: Designated for custom use 30
+    value: 30
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM30
+  - desc: Designated for custom use 31
+    value: 31
+    priority: 64
+    modes: [m, s, u]
+    macro: CUSTOM31
+  - desc: Reserved 32
+    value: 32
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED32
+  - desc: Reserved 33
+    value: 33
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED33
+  - desc: Reserved 34
+    value: 34
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED34
+  - desc: Reserved 35
+    value: 35
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED35
+  - desc: Reserved 36
+    value: 36
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED36
+  - desc: Reserved 37
+    value: 37
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED37
+  - desc: Reserved 38
+    value: 38
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED38
+  - desc: Reserved 39
+    value: 39
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED39
+  - desc: Reserved 40
+    value: 40
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED40
+  - desc: Reserved 41
+    value: 41
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED41
+  - desc: Reserved 42
+    value: 42
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED42
+  - desc: Reserved 43
+    value: 43
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED43
+  - desc: Reserved 44
+    value: 44
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED44
+  - desc: Reserved 45
+    value: 45
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED45
+  - desc: Reserved 46
+    value: 46
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED46
+  - desc: Reserved 47
+    value: 47
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED47
+  - desc: Designated for custom use 48
+    value: 48
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED48
+  - desc: Designated for custom use 49
+    value: 49
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED49
+  - desc: Designated for custom use 50
+    value: 50
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED50
+  - desc: Designated for custom use 51
+    value: 51
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED51
+  - desc: Designated for custom use 52
+    value: 52
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED52
+  - desc: Designated for custom use 53
+    value: 53
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED53
+  - desc: Designated for custom use 54
+    value: 54
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED54
+  - desc: Designated for custom use 55
+    value: 55
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED55
+  - desc: Designated for custom use 56
+    value: 56
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED56
+  - desc: Designated for custom use 57
+    value: 57
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED57
+  - desc: Designated for custom use 58
+    value: 58
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED58
+  - desc: Designated for custom use 59
+    value: 59
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED59
+  - desc: Designated for custom use 60
+    value: 60
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED60
+  - desc: Designated for custom use 61
+    value: 61
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED61
+  - desc: Designated for custom use 62
+    value: 62
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED62
+  - desc: Designated for custom use 63
+    value: 63
+    priority: 64
+    modes: [m, s, u]
+    macro: RESERVED63

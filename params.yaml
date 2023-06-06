@@ -1,16 +1,15 @@
 ---
 RESET_VECTOR:
   - vendor_defined: true
-    isa: ["machine", "sec:reset"]
+    isa: [machine, sec:reset]
 RESET_MCAUSE_VALUES:
   - vendor_defined: true
-    isa: ["machine", "sec:reset"]
+    isa: [machine, sec:reset]
 NMI_VECTOR:
   - vendor_defined: true
-    isa: ["machine", "sec:nmi"]
+    isa: [machine, sec:nmi]
 NMI_MCAUSE_VALUES:
   - vendor_defined: true
-    isa: ["machine", "sec:nmi"]
+    isa: [machine, sec:nmi]
 DEFAULT_MISA:
   - vendor_defined: false
-  

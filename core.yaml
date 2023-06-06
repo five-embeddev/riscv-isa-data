@@ -1,11 +1,8 @@
 ---
-status:
-  - draft
-  - ratified
-  - frozen
+status: [draft, ratified, frozen]
 isa:
   - name: rv32e
-    url: "/riscv-isa-manual/latest/rv32e.html#rv32e"
+    url: /riscv-isa-manual/latest/rv32e.html#rv32e
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv32e.tex
     fullname: RV32E Base Integer Instruction Set
@@ -13,20 +10,20 @@ isa:
     status: draft
     version: 1.9
     misa: 4
-    gcc_macro: __riscv __riscv_32e __riscv_xlen=32 
-    gcc_macro_obsolete:  
-    gcc_macro_new:  __riscv_e
+    gcc_macro: __riscv __riscv_32e __riscv_xlen=32
+    gcc_macro_obsolete:
+    gcc_macro_new: __riscv_e
     compiler_support: gcc
     gcc_version: 8.1.0
-    gcc_dev_branch: 
-
+    gcc_dev_branch:
   - name: rv32i
-    url: "/riscv-isa-manual/latest/rv32.html#rv32"
+    url: /riscv-isa-manual/latest/rv32.html#rv32
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv32.tex
     alias: rv32
     fullname: RV32I Base Integer Instruction Set
-    desc: A 32 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
+    desc: A 32 bit integer ISA sufficient to form a compiler target and to support
+      modern operating system environment
     status: ratified
     version: 2.1
     misa: 8
@@ -34,15 +31,15 @@ isa:
     gcc_macro_new: __riscv_i
     compiler_support: gcc
     gcc_version: 7.2.0
-    gcc_dev_branch: 
-
+    gcc_dev_branch:
   - name: rv64i
-    url: "/riscv-isa-manual/latest/rv64.html#rv64"
+    url: /riscv-isa-manual/latest/rv64.html#rv64
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv64.tex
     alias: rv64
     fullname: RV64I Base Integer Instruction Set
-    desc: A 64 bit integer ISA sufficient to form a compiler target and to support modern operating system environment
+    desc: A 64 bit integer ISA sufficient to form a compiler target and to support
+      modern operating system environment
     status: ratified
     version: 2.1
     misa: 8
@@ -50,10 +47,9 @@ isa:
     gcc_macro_new: __riscv_i
     compiler_support: gcc
     gcc_version: 7.2.0
-    gcc_dev_branch: 
-
+    gcc_dev_branch:
   - name: rv128
-    url: "/riscv-isa-manual/latest/rv128.html#rv128"
+    url: /riscv-isa-manual/latest/rv128.html#rv128
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/rv128.tex
     fullname: RV128I Base Integer Instruction Set
@@ -63,104 +59,96 @@ isa:
     misa: 8
     gcc_macro: __riscv __riscv_xlen=128
     gcc_macro_new: __riscv_i
-
 abi:
   eabi:
     name: eabi
     spec: https://github.com/riscv/riscv-eabi-spec
     desc: Embedded ABI
-    child:
-      - ilp32e
+    child: [ilp32e]
     regs:
-    - reg: x0
-      usage: zero
-      desc: Hard-wired zero value
-      saver: immutable
-      idx: 0
-      group: 0
-    - reg: x1
-      usage: ra
-      desc: Return address
-      saver: not_applicable
-      idx: 1
-      group: 0
-    - reg: x2
-      usage: sp
-      desc: Stack pointer
-      saver: callee
-      idx: 2
-      group: 0
-    - reg: x3
-      usage: gp
-      desc: Global pointer
-      saver: global
-      idx: 3
-      group: 0
-    - reg: x4
-      usage: tp
-      desc: Thread pointer
-      saver: global
-      idx: 4
-      group: 0
-    - reg: x5
-      usage: t0
-      desc: Temporary/link register
-      saver: caller
-      idx: 5
-      group: 1
-    - reg: x6-x7
-      usage: s3-s4
-      desc: Saved register
-      saver: callee
-      idx: 6
-      group: 1
-    - reg: x8
-      usage: s0/fp
-      desc: Saved register/frame pointer
-      saver: callee
-      idx: 8
-      group: 1
-    - reg: x9
-      usage: s1
-      desc: Saved register
-      saver: callee
-      idx: 9
-      group: 1
-    - reg: x10-x13
-      usage: a0-a3
-      desc: Argument/return value
-      saver: caller
-      idx: 10
-      group: 2
-    - reg: x14
-      usage: s2
-      desc: Saved register
-      saver: callee
-      idx: 14
-      group: 3
-    - reg: x15
-      usage: t1
-      desc: Temporary
-      saver: caller
-      idx: 15
-      group: 3
-    - reg: x16-x31
-      usage: s5-s20
-      desc: Saved registers
-      saver: callee    
-      idx: 16
-      group: 4
+      - reg: x0
+        usage: zero
+        desc: Hard-wired zero value
+        saver: immutable
+        idx: 0
+        group: 0
+      - reg: x1
+        usage: ra
+        desc: Return address
+        saver: not_applicable
+        idx: 1
+        group: 0
+      - reg: x2
+        usage: sp
+        desc: Stack pointer
+        saver: callee
+        idx: 2
+        group: 0
+      - reg: x3
+        usage: gp
+        desc: Global pointer
+        saver: global
+        idx: 3
+        group: 0
+      - reg: x4
+        usage: tp
+        desc: Thread pointer
+        saver: global
+        idx: 4
+        group: 0
+      - reg: x5
+        usage: t0
+        desc: Temporary/link register
+        saver: caller
+        idx: 5
+        group: 1
+      - reg: x6-x7
+        usage: s3-s4
+        desc: Saved register
+        saver: callee
+        idx: 6
+        group: 1
+      - reg: x8
+        usage: s0/fp
+        desc: Saved register/frame pointer
+        saver: callee
+        idx: 8
+        group: 1
+      - reg: x9
+        usage: s1
+        desc: Saved register
+        saver: callee
+        idx: 9
+        group: 1
+      - reg: x10-x13
+        usage: a0-a3
+        desc: Argument/return value
+        saver: caller
+        idx: 10
+        group: 2
+      - reg: x14
+        usage: s2
+        desc: Saved register
+        saver: callee
+        idx: 14
+        group: 3
+      - reg: x15
+        usage: t1
+        desc: Temporary
+        saver: caller
+        idx: 15
+        group: 3
+      - reg: x16-x31
+        usage: s5-s20
+        desc: Saved registers
+        saver: callee
+        idx: 16
+        group: 4
   uabi:
     name: uabi
     spec: https://github.com/riscv/riscv-elf-psabi-doc/blob/master/riscv-elf.md
     desc: Unix ABI
-    child:
-      - ilp32
-      - ilp32f
-      - ilp32d
-      - lp64
-      - lp64f
-      - lp64d
+    child: [ilp32, ilp32f, ilp32d, lp64, lp64f, lp64d]
     regs:
       - reg: x0
         usage: zero
@@ -224,55 +212,53 @@ abi:
         group: 4
 extension:
   - name: A
-    url: "/riscv-isa-manual/latest/a.html"
+    url: /riscv-isa-manual/latest/a.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/a.tex
     version: 2.0
     status: frozen
     misa: 0
     desc: Atomic extension
-    gcc_macro: 
+    gcc_macro:
     gcc_macro_obsolete: __riscv_atomic
     gcc_macro_new: __riscv_a
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
     order: 2
     aliased: G
     children: Zam
-
   - name: B
-    url: "/riscv-bitmanip/draft/bitmanip.html"
+    url: /riscv-bitmanip/draft/bitmanip.html
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/overview.adoc
-    children: [Zba,Zbb,Zbc,Zbs, Zbkx, Zbkc, Zbkb]
+    children: [Zba, Zbb, Zbc, Zbs, Zbkx, Zbkc, Zbkb]
     version: 0.0
     status: draft
     misa: 1
-    gcc_macro: 
+    gcc_macro:
     gcc_version: 12.0
     gcc_dev_branch: riscv-bitmanip
     compiler_support: gcc
     desc: Bit-Manipulation extension
     order: 7
-
   - name: C
-    url: "/riscv-isa-manual/latest/c.html"
+    url: /riscv-isa-manual/latest/c.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/c.tex
     version: 2.0
     status: ratification
     misa: 2
     desc: Compressed Instructions Extension
-    gcc_macro: 
+    gcc_macro:
     gcc_macro_obsolete: __riscv_compressed
     gcc_macro_new: __riscv_c
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
     order: 6
   - name: D
-    url: "/riscv-isa-manual/latest/d.html"
+    url: /riscv-isa-manual/latest/d.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/d.tex
     version: 2.2
@@ -280,17 +266,16 @@ extension:
     misa: 3
     desc: Double-precision floating-point extension
     gcc_macro: __riscv_float_abi_double __riscv_flen=64
-    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt 
-    gcc_macro_new: __riscv_d 
+    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt
+    gcc_macro_new: __riscv_d
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
     order: 4
     aliased: G
     children: Zdinx
-
   - name: F
-    url: "/riscv-isa-manual/latest/f.html"
+    url: /riscv-isa-manual/latest/f.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/f.tex
     version: 2.2
@@ -298,31 +283,28 @@ extension:
     misa: 5
     desc: Single-precision floating-point extension
     gcc_macro: __riscv_float_abi_single __riscv_flen=32
-    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt 
+    gcc_macro_obsolete: __riscv_fdiv __riscv_fsqrt
     gcc_macro_new: __riscv_f
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
     order: 3
     aliased: G
     children: Zfinx
-
   - name: G
-    url: "/riscv-isa-manual/latest//machine.html#sec:misa"
+    url: /riscv-isa-manual/latest//machine.html#sec:misa
     status: reserved
     misa: 6
     desc: Additional standard extensions present
-
   - name: H
     official: https://github.com/riscv/riscv-isa-manual/
-    url: "/riscv-isa-manual/latest/hypervisor.html#hypervisor"
+    url: /riscv-isa-manual/latest/hypervisor.html#hypervisor
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/hypervisor.tex
     status: draft
     misa: 7
     desc: Hypervisor extension
-
   - name: J
-    url: "/riscv-isa-manual/latest/j.html"
+    url: /riscv-isa-manual/latest/j.html
     official: https://github.com/riscv/riscv-j-extension
     working: https://github.com/riscv/riscv-j-extension/blob/master/README.md
     status: draft
@@ -330,15 +312,13 @@ extension:
     misa: 9
     desc: Dynamically Translated Languages extension
     order: 8
-
   - name: L
     status: not_specified
     misa: 11
     desc: Decimal Floating-Point extension
     order: 6
-
   - name: M
-    url: "/riscv-isa-manual/latest/m.html"
+    url: /riscv-isa-manual/latest/m.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/m.tex
     children: Zmmul
@@ -346,35 +326,32 @@ extension:
     status: ratification
     misa: 12
     desc: Integer Multiply/Divide extension
-    gcc_macro: 
+    gcc_macro:
     gcc_macro_obsolete: __riscv_mul __riscv_muldiv __riscv_div
     gcc_macro_new: __riscv_m
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
     order: 1
     aliased: G
-
   - name: N
     version: 1.1
     status: not_specified
     misa: 13
     desc: User-level interrupts supported
     order: 12
-
   - name: P
-    url: "/riscv-isa-manual/latest/p.html"
+    url: /riscv-isa-manual/latest/p.html
     official: https://github.com/riscv/riscv-p-spec
     working: https://github.com/riscv/riscv-p-spec/blob/master/P-ext-proposal.adoc
     version: 0.2
     status: draft
     misa: 15
-    desc: Packed-SIMD extension    
+    desc: Packed-SIMD extension
     order: 10
     gcc_macro_new: __riscv_p
-
   - name: Q
-    url: "/riscv-isa-manual/latest/q.html"
+    url: /riscv-isa-manual/latest/q.html
     official: https://github.com/riscv/riscv-isa-manual/
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/q.tex
     version: 2.2
@@ -383,15 +360,13 @@ extension:
     desc: Quad-precision floating-point extension
     order: 5
     gcc_macro: __riscv_flen=128
-
   - name: T
     status: not_specified
     misa: 21
     desc: Transactional Memory extension
     order: 9
-
   - name: V
-    url: "/riscv-v-spec/draft/v-spec.html"
+    url: /riscv-v-spec/draft/v-spec.html
     official: https://github.com/riscv/riscv-v-spec
     working: https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc
     version: 1.0
@@ -399,35 +374,31 @@ extension:
     misa: 21
     desc: Vector extension
     gcc_macro: __riscv_vector __riscv_v_min_vlen __riscv_v_elen __riscv_v_elen_fp
-    gcc_macro_new: __riscv_v 
-    gcc_version: 
+    gcc_macro_new: __riscv_v
+    gcc_version:
     gcc_dev_branch: 9.2.0-rvv 10.1.0-rvv
     compiler_support: gcc
     order: 11
     params: [ELEN, VLEN]
-
   - name: X
-    url: "/riscv-isa-manual/latest/extensions.html#standard-versus-non-standard-extension"
+    url: /riscv-isa-manual/latest/extensions.html#standard-versus-non-standard-extension
     status: reserved
     misa: 23
     desc: Non-standard extensions present
-
   - name: Counters
     desc: Performance Counter CSRs
-    url: "/riscv-isa-manual/latest/counters.html"
+    url: /riscv-isa-manual/latest/counters.html
     version: 2.0
     status: draft
-
   - name: Zam
-    url: "/riscv-isa-manual/latest/zam.html"
+    url: /riscv-isa-manual/latest/zam.html
     version: 0.1
     status: draft
     desc: Standard Extension for Misaligned Atomics
     parent: A
-
   - name: Zifencei
-    url: "/riscv-isa-manual/latest/Zifencei.html"
-    official: https://github.com/riscv/riscv-isa-manual    
+    url: /riscv-isa-manual/latest/Zifencei.html
+    official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zifencei.tex
     version: 2.0
     status: ratification
@@ -435,22 +406,19 @@ extension:
     aliased: G
     gcc_macro_new: __riscv_zifencei
     compiler_support: gcc
-
   - name: Zihintntl
     desc: Non-Temporal Locality Hints
-    official: https://github.com/riscv/riscv-isa-manual    
+    official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zihintntl.tex
     version: 0.2
-
   - name: Zihintpause
     desc: Pause Hint
-    official: https://github.com/riscv/riscv-isa-manual    
+    official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zihintpause.tex
     version: 2.0
-
   - name: Zicsr
-    url: "/riscv-isa-manual/latest/Zicsr.html"
-    official: https://github.com/riscv/riscv-isa-manual    
+    url: /riscv-isa-manual/latest/Zicsr.html
+    official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/csr.tex
     version: 2.0
     status: ratification
@@ -458,22 +426,19 @@ extension:
     aliased: G
     gcc_macro_new: __riscv_zicsr
     compiler_support: gcc
-
   - name: Ztso
-    url: "/riscv-isa-manual/latest/Ztso.html"
-    official: https://github.com/riscv/riscv-isa-manual    
+    url: /riscv-isa-manual/latest/Ztso.html
+    official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/ztso.tex
     version: 0.1
     status: frozen
     desc: Standard Extension for Total Store Ordering
-
   - name: Zfh
     desc: Standard Extension for 16-bit Half-Precision Binary Floating-Point Instructions
     official: https://github.com/riscv/riscv-isa-manual
     working: https://github.com/riscv/riscv-isa-manual/blob/master/src/zfh.tex
     children: Zhinx, Zhinxmin
     gcc_macro_new: __riscv_zfh
-
   - name: Zfinx
     url: https://github.com/riscv/riscv-zfinx/blob/main/zfinx-1.0.0.pdf
     official: https://github.com/riscv/riscv-zfinx
@@ -482,29 +447,32 @@ extension:
     parent: F
     version: 1.0.0
     desc: Standard Extension for Floating-Point in Integer Registers
-
   - name: Zdinx
     parent: D
     desc: Standard Extension for Double Floating-Point in Integer Registers
-
   - name: Zhinx
     desc: Standard Extension for Half Precision Floating-Point in Integer Registers
     parent: Zfh
-
   - name: Zhinxmin
     url: https://github.com/riscv/riscv-zfinx/blob/main/zfinx-1.0.0.pdf
     parent: Zfh
-
   - name: Zawrs
     desc: Wait-on-Reservation-Set extension (low power mode)
     official: https://github.com/riscv/riscv-zawrs
     url: https://github.com/riscv/riscv-zawrs/blob/main/Zawrs.pdf
-
   - name: Zk
     desc: Scalar Crypto Specification
-    children: [Zkn, Zks, Zkr, Zkne, Zknd, Zknh, Zksed, Zksh, Zkt]
+    children:
+      - Zkn
+      - Zks
+      - Zkr
+      - Zkne
+      - Zknd
+      - Zknh
+      - Zksed
+      - Zksh
+      - Zkt
     url: https://github.com/riscv/riscv-crypto/releases/download/v0.9.0-scalar/riscv-crypto-spec-v0.9.0-scalar.pdf
-
   - name: Zkn
     parent: Zk
   - name: Zks
@@ -523,198 +491,170 @@ extension:
     parent: Zk
   - name: Zkt
     parent: Zk
-
   - name: Zmmul
     desc: Multiply Without Divide
     parent: M
-    gcc_macro_obsolete: __riscv_mul 
-
+    gcc_macro_obsolete: __riscv_mul
   - name: Zba
-    desc: "Bit-manipulation: Address generation instructions"
+    desc: 'Bit-manipulation: Address generation instructions'
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zba
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zba.adoc
     gcc_version: 12.0
     gcc_macro_new: __riscv_zba
-
   - name: Zbb
-    desc: "Basic bit-manipulation"
+    desc: Basic bit-manipulation
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbb
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbb.adoc
     gcc_version: 12.0
     gcc_macro_new: __riscv_zbb
-
   - name: Zbc
-    desc: "Bit-manipulation: Carry-less multiplication"
+    desc: 'Bit-manipulation: Carry-less multiplication'
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbc
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbc.adoc
     gcc_version: 12.0
     gcc_macro_new: __riscv_zbc
-
   - name: Zbs
-    desc: "Bit-manipulation: Single-bit instructions"
+    desc: 'Bit-manipulation: Single-bit instructions'
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbs
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbs.adoc
     gcc_version: 12.0
     gcc_macro_new: __riscv_zbs
-
   - name: Zbkx
     parent: B
-    desc: "Bit-manipulation: Crossbar permutations"
+    desc: 'Bit-manipulation: Crossbar permutations'
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkx
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkz.adoc
-
   - name: Zbkc
-    desc: "Bit-manipulation: Carry-less multiplication for Cryptography"
+    desc: 'Bit-manipulation: Carry-less multiplication for Cryptography'
     parent: B
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkc
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkc.adoc
-
-  - name: Zbkb    
+  - name: Zbkb
     parent: B
-    desc: "Bit-manipulation for Cryptography"
+    desc: Bit-manipulation for Cryptography
     url: http://127.0.0.1:4000/riscv-bitmanip/draft/bitmanip.html#zbkb
     official: https://github.com/riscv/riscv-bitmanip
     working: https://github.com/riscv/riscv-bitmanip/blob/main/bitmanip/zbkb.adoc
-
   - name: Zce
     desc: Code Size Reduction
     url: https://github.com/riscv/riscv-code-size-reduction/tags
     official: https://github.com/riscv/riscv-code-size-reduction/
-
   - name: Zjid
     desc: Temporary Proposal for Instruction/Data synchronization for JIT.
     parent: J
     official: https://github.com/riscv/riscv-j-extension/tree/master/zjid
-
   - name: Zicbo
     url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
     desc: Cache Management Operations for RISC-V
     official: https://github.com/riscv/riscv-CMOs
     working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/
     children: [Zicbom, Zicboz, Zicbop]
-
   - name: Zicbom
     url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
     desc: Cache-Block Management Instructions
     official: https://github.com/riscv/riscv-CMOs
     working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicbom.adoc
     parent: Zicbo
-
   - name: Zicboz
     url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
     desc: Cache-Block Zero Instructions
     official: https://github.com/riscv/riscv-CMOs
     working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicboz.adoc
     parent: Zicbo
-
   - name: Zicbop
     desc: Cache-Block Prefetch Instructions
     url: https://github.com/riscv/riscv-CMOs/blob/master/specifications/cmobase-v1.0.1.pdf
     official: https://github.com/riscv/riscv-CMOs
     working: https://github.com/riscv/riscv-CMOs/blob/master/cmobase/Zicbop.adoc
     parent: Zicbo
-
   - name: Zve
     desc: Vector Extensions for Embedded Processors
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
     children: [Zve32x, Zve32f, Zve64x, Zve64f, Zve64d]
-
   - name: Zve32x
     parent: Zve
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
-    desc: "VLEN>=32 bits, Integer Only Vector"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
+    desc: VLEN>=32 bits, Integer Only Vector
     gcc_new_macro: __riscv_vector __riscv_v_min_vlen=32 __riscv_v_elen=32 __riscv_v_elen_fp=0
-
   - name: Zve32f
     parent: Zve
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
-    desc: "VLEN>=32 bits, 32 Bit Float Vector"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
+    desc: VLEN>=32 bits, 32 Bit Float Vector
     gcc_new_macro: __riscv_vector __riscv_v_min_vlen=32 __riscv_v_elen=32 __riscv_v_elen_fp=32
-
   - name: Zve64x
     parent: Zve
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
-    desc: "VLEN>=64 bits, Integer Only Vector"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
+    desc: VLEN>=64 bits, Integer Only Vector
     gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64 __riscv_v_elen=64 __riscv_v_elen_fp=0
-
   - name: Zve64f
     parent: Zve
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
-    desc: "VLEN>=64 bits, 32 Bit Float Support Vector"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
+    desc: VLEN>=64 bits, 32 Bit Float Support Vector
     gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64  __riscv_v_elen=64 __riscv_v_elen_fp=32
-
   - name: Zve64d
     parent: Zve
-    url: "/riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors"
-    desc: "VLEN>=64 bits, 64 Bit Float Support Vector"
+    url: /riscv-v-spec/draft/v-spec.html#_zve_vector_extensions_for_embedded_processors
+    desc: VLEN>=64 bits, 64 Bit Float Support Vector
     gcc_new_macro: __riscv_vector __riscv_v_min_vlen=64 __riscv_v_elen=64 __riscv_v_elen_fp=64
-
   - name: Zvl
     parent: V
     children: [Zvl32b, Zvl64b, Zvl128b, Zvl256b, Zvl512b, Zvl1024b]
-    url: "/riscv-v-spec/draft/v-spec.html#_zvl_minimum_vector_length_standard_extensions"
+    url: /riscv-v-spec/draft/v-spec.html#_zvl_minimum_vector_length_standard_extensions
     desc: Minimum Vector Length Standard Extensions
     gcc_new_macro: __riscv_v_min_vlen=X
-
   - name: Zvl32b
     parent: Zvl
-    desc: "VLEN>=32 bits (default)"
+    desc: VLEN>=32 bits (default)
     gcc_new_macro: __riscv_v_min_vlen=32
-
   - name: Zvl64b
     parent: Zvl
-    desc: "VLEN>=64 bits"
+    desc: VLEN>=64 bits
     gcc_new_macro: __riscv_v_min_vlen=64
-
   - name: Zvl128b
     parent: Zvl
-    desc: "VLEN>=128 bits"
-    gcc_new_macro: __riscv_v_min_vlen=128	
-
+    desc: VLEN>=128 bits
+    gcc_new_macro: __riscv_v_min_vlen=128
   - name: Zvl256b
     parent: Zvl
-    desc: "VLEN>=256 bits"
+    desc: VLEN>=256 bits
     gcc_new_macro: __riscv_v_min_vlen=256
-
   - name: Zvl512b
     parent: Zvl
-    desc: "VLEN>=512 bits"
+    desc: VLEN>=512 bits
     gcc_new_macro: __riscv_v_min_vlen=512
-
   - name: Zvl1024b
     parent: Zvl
-    desc: "VLEN>=1024 bits"
+    desc: VLEN>=1024 bits
     gcc_new_macro: __riscv_v_min_vlen=1024
-
 alias:
   - name: G
     expansion: IMAFDZicsr_Zifencei
     desc: Set of extensions required for general purpose OS support.
     gcc_version: 7.2.0
-    gcc_dev_branch: 
+    gcc_dev_branch:
     compiler_support: gcc
 mode:
   - fullname: machine
     name: m
-    url: "/riscv-isa-manual/latest/machine.html#machine" 
+    url: /riscv-isa-manual/latest/machine.html#machine
   - fullname: supervisor
     name: s
     misa: 18
-    url: "/riscv-isa-manual/latest/supervisor.html#supervisor"
+    url: /riscv-isa-manual/latest/supervisor.html#supervisor
   - fullname: user
     name: u
     misa: 20
   - fullname: debug
     name: d
-    misa: 
-    url: "/riscv-debug-spec/latest/riscv-debug-spec.html"
+    misa:
+    url: /riscv-debug-spec/latest/riscv-debug-spec.html
