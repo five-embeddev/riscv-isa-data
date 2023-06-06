@@ -1,0 +1,77 @@
+{% assign isa = "rv32"] %}
+{% assign sections = data.sections[isa] %}
+
+{% if sections %}
+{% if sections.size > 1 %}
+
+<table>
+<tr>
+{% assign i = 0 %}
+{% for section in sections %}
+{% assign section_ref = section[0] | remove: "#" %}
+{% assign section_name = section[0] | remove: "#" | replace: "_", " " | replace: "-", " " %}
+<td>
+<a href="#sec_{{isa}}_{{section_ref}}">{{section_name}}</a>
+</td>
+{% if i == 4 %}
+</tr><tr>
+{% endif  %}
+{% assign i = i | plus: 1 | modulus: 5 %}
+{% endfor %}
+</tr>
+</table>
+
+{% endif %}
+{% endif %}
+
+{% if sections %}
+{% for section in sections %}
+{% assign section_id = section[0] %}
+{% assign section_ref = section[0] | remove: "#" %}
+{% assign section_labels = data.sections_labels[isa][section_id] %}
+{% assign url = section_labels.url %}
+{% assign headers = section_labels.headers %}
+
+### <a name="sec_{{isa}}_{{section_ref}}"></a> {{isa}} / {{section_ref}}
+
+{{headers[0]}} / {{headers[1]}}
+
+<table class="sortable-theme-dark" data-sortable>
+<thead>
+<tr>
+<td>Operation</td>
+<td>Arguments</td>
+<td>Description</td>
+</tr>
+</thead>
+<tbody>
+{% for opcode in section[1] %}
+{% assign opcode_data = data..opcodes[opcode] %}
+{% assign desc = opcode_data.desc[isa][section_id] %}
+{% assign args = opcode | opcode_args %}
+<tr>
+
+<td>
+<span class="opcode">
+<a href="{{url}}">{{opcode}}</a>
+</span>
+</td>
+
+<td>
+<span class="opcode">{{args}}</span>
+</td>
+
+<td>
+{% for text in desc.text %}
+<div>{{text}}</div>
+{% endfor %}
+</td>
+
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endfor %}
+{% endif %}
+

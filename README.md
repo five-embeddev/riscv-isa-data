@@ -11,7 +11,7 @@ Used for code generation.
 
 ## Tests
 
-Install `yamllint`.
+Install `yamllint` and `yamlfix`.
 
 e.g.
 
@@ -23,9 +23,20 @@ sudo apt install yamllint
 Run tests.
 
 ~~~
-make -C test
+make test
 ~~~
 
 ## Examples
+
+Generate a table of opcode data using Ruby.
+
+~~~
+cd examples/ruby
+gem install liquid
+./test.rb
+~~~
+
+This will create a file `result.html` from the template `template.html` using the data in `opcodes.yaml`.
+
 
 
